@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  backend:
+    build:
+      context: ./be_karem
+    ports:
+      - "5175:5175"
+    volumes:
+      - ./be_karem:/app
+    environment:
+      - FLASK_ENV=development
+      - MONGO_URI=mongodb://mongo:27017/mydatabase
+    depends_on:
+      - mongo
+
+  frontend:
+    build:
+      context: ./fe_karem
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./fe_karem:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - backend
+
+  # MongoDB
+  mongo:
+    image: mongo:5
+    container_name: mongo
+    ports:
+      - "27017:27017"  # Port MongoDB
+    volumes:
+      - mongo_data:/data/db  # Trwałe przechowywanie danych
+
+volumes:
+  mongo_data:
+
