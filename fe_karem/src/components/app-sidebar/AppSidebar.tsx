@@ -2,31 +2,39 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Link } from "@tanstack/react-router";
-import { Home } from "lucide-react";
+import { Box, CodeXml, Home, NotebookPen } from "lucide-react";
+import { NavMain } from "./NavMain";
 
 export function AppSidebar() {
   const menuItems = [
     {
-      title: "Strona Główna",
+      title: "O projekcie",
       url: "/",
       icon: Home,
     },
     {
       title: "Code Runner",
       url: "/code-runner",
-      icon: Home,
+      icon: CodeXml,
     },
     {
-      title: "Users",
-      url: "/users",
-      icon: Home,
+      title: "Nauka Algorytmów",
+      icon: NotebookPen,
+      items: [
+        { title: 'SubItem 2-1', url: '/item2/subitem1' },
+        { title: 'SubItem 2-2', url: '/item2/subitem2' },
+      ],
+    },
+    {
+      title: "Nauka Reacta",
+      icon: Box,
+      isActive: true,
+      items: [
+        { title: 'SubItem 2-1', url: '/item2/subitem1' },
+        { title: 'SubItem 2-2', url: '/item2/subitem2' },
+      ],
     }
   ]
   return (
@@ -37,25 +45,7 @@ export function AppSidebar() {
         </h1>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarMenu>
-            {menuItems.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <Link to={item.url}>
-                    <item.icon className="w-6 h-6 mr-4" />
-                    <span>{item.title}</span>
-                  </Link>
-                  {/* <a href="#">
-                    <item.icon className="w-6 h-6 mr-4" />
-                    <span>{item.title}</span>
-                  </a> */}
-
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
+        <NavMain items={menuItems} />        
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>

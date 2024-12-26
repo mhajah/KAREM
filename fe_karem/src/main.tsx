@@ -5,6 +5,7 @@ import { SidebarProvider } from './components/ui/sidebar.tsx'
 import { ThemeProvider } from './providers/ThemeProvider.tsx'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen.ts'
+import { UserProvider } from './providers/UserProvider.tsx'
 
 const router = createRouter({ routeTree });
 
@@ -18,9 +19,11 @@ declare module '@tanstack/react-router' {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
-      <SidebarProvider>
-        <RouterProvider router={router} />
-      </SidebarProvider>
+      <UserProvider>
+        <SidebarProvider>
+          <RouterProvider router={router} />
+        </SidebarProvider>
+      </UserProvider>
     </ThemeProvider>
   </StrictMode>,
 )
