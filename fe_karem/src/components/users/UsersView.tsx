@@ -34,15 +34,10 @@ const UsersView = () => {
           <li key={index}>{user}</li>
         ))}
       </ul>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Podaj nazwę"
-      />
+      <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Podaj nazwę" />
       <button onClick={addUser}>Dodaj użytkownika</button>
     </div>
   );
-}
+};
 
 export default UsersView;
