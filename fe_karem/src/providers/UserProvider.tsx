@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { jwtDecode } from "jwt-decode";
+import { useToast } from "@/hooks/use-toast";
 
 interface User {
   id: string;
@@ -16,16 +17,27 @@ const UserContext = createContext<{
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const { toast } = useToast();
 
   const login = (token: string) => {
     const decoded = jwtDecode<User>(token);
     setUser(decoded);
     localStorage.setItem("token", token);
+    toast({
+      title: "Zalogowano",
+      description: "Zostałeś pomyślnie zalogowany.",
+      duration: 4000,
+    });
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
+    toast({
+      title: "Wylogowano",
+      description: "Zostałeś pomyślnie wylogowany.",
+      duration: 4000,
+    });
     console.log("Logged out");
   };
 
