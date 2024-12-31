@@ -1,4 +1,3 @@
-import { useUser } from "@/providers/UserProvider";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/")({
@@ -6,8 +5,6 @@ export const Route = createLazyFileRoute("/")({
 });
 
 function RouteComponent() {
-  const x = useUser();
-  console.log(x);
   return (
     <div>
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Witaj!</h1>

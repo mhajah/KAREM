@@ -60,6 +60,11 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        code: {
+          background: "hsl(var(--code-background))",
+          foreground: "hsl(var(--code-foreground))",
+          border: "hsl(var(--code-border))",
+        },
       },
     },
   },

@@ -6,6 +6,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { LoginDialog } from "../login/LoginDialog";
 import { useUser } from "@/providers/UserProvider";
 import { Button } from "../ui/button";
+import { RegisterDialog } from "../login/RegisterDialog";
 
 export default function Header() {
   const location = useLocation();
@@ -26,7 +27,7 @@ export default function Header() {
             {pathnames.map((value, index) => {
               const to = `/${pathnames.slice(0, index + 1).join("/")}`;
               return (
-                <BreadcrumbItem key={to}>
+                <BreadcrumbItem key={to} className="hidden lg:flex">
                   <BreadcrumbSeparator />
                   <BreadcrumbPage>
                     <Link to={to}>{value}</Link>
@@ -38,7 +39,20 @@ export default function Header() {
         </Breadcrumb>
       </div>
       <div className="flex justify-center align-center gap-2 text-foreground">
-        {user.user ? <Button onClick={() => user.logout()}>Logout</Button> : <LoginDialog />}
+        {user.isValid ? (
+          <Button variant="secondary" onClick={() => user.logout()}>
+            Wyloguj się
+          </Button>
+        ) : (
+          <>
+            <LoginDialog /> <RegisterDialog />
+          </>
+        )}
+        {user.isValid && user.roleValue >= 10 && (
+          <Link to="/admin-panel">
+            <Button variant="default">Admin Panel</Button>
+          </Link>
+        )}
         <ModeToggle />
       </div>
     </header>

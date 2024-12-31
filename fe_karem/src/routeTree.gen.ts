@@ -8,109 +8,130 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router'
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as CodeRunnerImport } from "./routes/code-runner";
+import { Route as rootRoute } from './routes/__root'
+import { Route as CodeRunnerImport } from './routes/code-runner'
 
 // Create Virtual Routes
 
-const UsersLazyImport = createFileRoute("/users")();
-const IndexLazyImport = createFileRoute("/")();
+const UsersLazyImport = createFileRoute('/users')()
+const AdminPanelLazyImport = createFileRoute('/admin-panel')()
+const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
 
 const UsersLazyRoute = UsersLazyImport.update({
-  id: "/users",
-  path: "/users",
+  id: '/users',
+  path: '/users',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/users.lazy").then((d) => d.Route));
+} as any).lazy(() => import('./routes/users.lazy').then((d) => d.Route))
+
+const AdminPanelLazyRoute = AdminPanelLazyImport.update({
+  id: '/admin-panel',
+  path: '/admin-panel',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/admin-panel.lazy').then((d) => d.Route))
 
 const CodeRunnerRoute = CodeRunnerImport.update({
-  id: "/code-runner",
-  path: "/code-runner",
+  id: '/code-runner',
+  path: '/code-runner',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const IndexLazyRoute = IndexLazyImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexLazyImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/code-runner": {
-      id: "/code-runner";
-      path: "/code-runner";
-      fullPath: "/code-runner";
-      preLoaderRoute: typeof CodeRunnerImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/users": {
-      id: "/users";
-      path: "/users";
-      fullPath: "/users";
-      preLoaderRoute: typeof UsersLazyImport;
-      parentRoute: typeof rootRoute;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/code-runner': {
+      id: '/code-runner'
+      path: '/code-runner'
+      fullPath: '/code-runner'
+      preLoaderRoute: typeof CodeRunnerImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin-panel': {
+      id: '/admin-panel'
+      path: '/admin-panel'
+      fullPath: '/admin-panel'
+      preLoaderRoute: typeof AdminPanelLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/users': {
+      id: '/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof UsersLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexLazyRoute;
-  "/code-runner": typeof CodeRunnerRoute;
-  "/users": typeof UsersLazyRoute;
+  '/': typeof IndexLazyRoute
+  '/code-runner': typeof CodeRunnerRoute
+  '/admin-panel': typeof AdminPanelLazyRoute
+  '/users': typeof UsersLazyRoute
 }
 
 export interface FileRoutesByTo {
-  "/": typeof IndexLazyRoute;
-  "/code-runner": typeof CodeRunnerRoute;
-  "/users": typeof UsersLazyRoute;
+  '/': typeof IndexLazyRoute
+  '/code-runner': typeof CodeRunnerRoute
+  '/admin-panel': typeof AdminPanelLazyRoute
+  '/users': typeof UsersLazyRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  "/": typeof IndexLazyRoute;
-  "/code-runner": typeof CodeRunnerRoute;
-  "/users": typeof UsersLazyRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexLazyRoute
+  '/code-runner': typeof CodeRunnerRoute
+  '/admin-panel': typeof AdminPanelLazyRoute
+  '/users': typeof UsersLazyRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/code-runner" | "/users";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/code-runner" | "/users";
-  id: "__root__" | "/" | "/code-runner" | "/users";
-  fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/code-runner' | '/admin-panel' | '/users'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/code-runner' | '/admin-panel' | '/users'
+  id: '__root__' | '/' | '/code-runner' | '/admin-panel' | '/users'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute;
-  CodeRunnerRoute: typeof CodeRunnerRoute;
-  UsersLazyRoute: typeof UsersLazyRoute;
+  IndexLazyRoute: typeof IndexLazyRoute
+  CodeRunnerRoute: typeof CodeRunnerRoute
+  AdminPanelLazyRoute: typeof AdminPanelLazyRoute
+  UsersLazyRoute: typeof UsersLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   CodeRunnerRoute: CodeRunnerRoute,
+  AdminPanelLazyRoute: AdminPanelLazyRoute,
   UsersLazyRoute: UsersLazyRoute,
-};
+}
 
-export const routeTree = rootRoute._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
@@ -120,6 +141,7 @@ export const routeTree = rootRoute._addFileChildren(rootRouteChildren)._addFileT
       "children": [
         "/",
         "/code-runner",
+        "/admin-panel",
         "/users"
       ]
     },
@@ -128,6 +150,9 @@ export const routeTree = rootRoute._addFileChildren(rootRouteChildren)._addFileT
     },
     "/code-runner": {
       "filePath": "code-runner.tsx"
+    },
+    "/admin-panel": {
+      "filePath": "admin-panel.lazy.tsx"
     },
     "/users": {
       "filePath": "users.lazy.tsx"

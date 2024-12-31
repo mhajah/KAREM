@@ -27,7 +27,7 @@ export function FooterSidebar() {
                   <User2 />
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">{user.name}</span>
-                    <span className="truncate text-xs">admin</span>
+                    <span className="truncate text-xs">{user.role}</span>
                   </div>
                   <ChevronsUpDown className="ml-auto size-4" />
                 </SidebarMenuButton>
@@ -42,7 +42,7 @@ export function FooterSidebar() {
                     <User2 />
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-semibold">{user.name}</span>
-                      <span className="truncate text-xs">admin</span>
+                      <span className="truncate text-xs">{user?.role ? user.role : ""}</span>
                     </div>
                   </div>
                 </DropdownMenuLabel>
@@ -71,7 +71,7 @@ export function FooterSidebar() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => logout()}>
                   <LogOut />
-                  Log out
+                  Wyloguj
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -12,15 +12,15 @@ import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { AlertCircle } from "lucide-react";
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  username: z.string().min(3, {
+    message: "Nazwa użytkownika musi składać się przynajmniej 3 znaków.",
   }),
-  password: z.string().min(2, {
-    message: "Password must be at least 2 characters.",
+  password: z.string().min(5, {
+    message: "Hasło musi składać się przynajmniej z 5 znaków.",
   }),
 });
 
-export function ProfileForm() {
+export function LoginForm() {
   const { login } = useUser();
   const [error, setError] = useState<string | null>(null);
 
@@ -45,7 +45,7 @@ export function ProfileForm() {
     } catch (error) {
       console.error("Failed to login:", error);
       if (error instanceof AxiosError) {
-        setError(error.response?.data.error || "An error occurred");
+        setError(error.response?.data.error || "Wystąpił nieznany błąd");
       }
     }
   }
@@ -79,7 +79,7 @@ export function ProfileForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Hasło</FormLabel>
               <FormControl>
                 <Input {...field} type="password" />
               </FormControl>

@@ -20,10 +20,10 @@ function CodeRunner() {
   };
 
   return (
-    <div>
+    <div className="bg-code-background p-4">
       <h1>Run Python Code</h1>
       <form onSubmit={handleSubmit}>
-        <textarea value={code} onChange={(e) => setCode(e.target.value)} rows={10} cols={50} />
+        <textarea value={code} onChange={(e) => setCode(e.target.value)} rows={10} cols={50} className="text-black" />
         <br />
         <button type="submit">Run</button>
       </form>
