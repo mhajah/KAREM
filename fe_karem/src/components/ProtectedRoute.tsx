@@ -1,6 +1,6 @@
 import React from "react";
-import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "@tanstack/react-router";
+import { useUser } from "@/providers/UserProvider";
 
 interface ProtectedRouteProps {
   element: React.ReactNode;
@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, minRoleValue }) => {
-  const auth = useAuth();
+  const auth = useUser();
   const navigate = useNavigate();
 
   if (auth.loading) {

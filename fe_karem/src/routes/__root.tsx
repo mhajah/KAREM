@@ -5,7 +5,6 @@ import { AppSidebar } from "@/components/app-sidebar/AppSidebar";
 import { SidebarInset } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { useUser } from "@/providers/UserProvider";
-import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -13,8 +12,7 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   const { loading } = useUser();
-  const { loading: loadingAuth } = useAuth();
-  if (loading || loadingAuth) {
+  if (loading) {
     return null;
   }
   return (

@@ -2,11 +2,18 @@ FROM node:18-slim
 
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
 RUN apt-get update && apt-get install -y python3 python3-pip
 
-EXPOSE 5175
+COPY package*.json ./
+
+RUN npm install
 
 COPY . .
 
-CMD ["node", "index.js"]
+COPY src ./src
+
+RUN npm run build
+
+EXPOSE 5175
+
+CMD ["node", "dist/index.js"]

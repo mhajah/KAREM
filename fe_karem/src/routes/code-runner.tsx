@@ -1,5 +1,4 @@
 import CodeRunner from "@/components/code-runner/CodeRunner";
-import { useAuth } from "@/hooks/use-auth";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/code-runner")({
@@ -7,9 +6,5 @@ export const Route = createFileRoute("/code-runner")({
 });
 
 function RouteComponent() {
-  const auth = useAuth();
-  if (auth.loading) {
-    return null;
-  }
   return <CodeRunner />;
 }

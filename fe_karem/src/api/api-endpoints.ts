@@ -9,7 +9,7 @@ export type User = {
 
 export const getUsers = async () => {
   try {
-    const { data } = await api.get<User[]>("/get-all-users-data");
+    const { data } = await api.post<User[]>("/get-all-users-data");
     return data;
   } catch (error) {
     console.error("Nie udało się pobrać użytkowników:", error);

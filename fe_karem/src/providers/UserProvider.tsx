@@ -78,7 +78,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     setLoading(true);
     try {
-      const response = await api.get("/verify-token", {
+      const response = await api.post("/verify-token", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
