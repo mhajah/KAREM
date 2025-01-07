@@ -83,6 +83,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       });
 
       const verifiedUser = response.data.user;
+      console.log("Verified user:", verifiedUser);
       setUser(verifiedUser);
       setIsValid(true);
       setRole(verifiedUser.role);

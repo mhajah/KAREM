@@ -39,7 +39,8 @@
     --chart-5: 27 87% 67%;
 
     /* Code Runner */
-    --code-background: 45 50% 100%;
+    --code-background: 27 87% 67%;
+    --code-foreground: black;
   }
 
   .dark {
@@ -78,6 +79,7 @@
     --chart-5: 340 75% 55%;
 
     /* Code Runner */
-    --code-background: 20 14.3% 80.1%;
+    --code-background: 0 0% 15%;
+    --code-foreground: white;
   }
 }

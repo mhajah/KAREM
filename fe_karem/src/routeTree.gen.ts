@@ -14,12 +14,15 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as CodeRunnerImport } from './routes/code-runner'
+import { Route as StrefaNauczycielaIndexImport } from './routes/strefa-nauczyciela/index'
+import { Route as ZadaniaIdImport } from './routes/zadania/$id'
 
 // Create Virtual Routes
 
 const UsersLazyImport = createFileRoute('/users')()
 const AdminPanelLazyImport = createFileRoute('/admin-panel')()
 const IndexLazyImport = createFileRoute('/')()
+const ZadaniaIndexLazyImport = createFileRoute('/zadania/')()
 
 // Create/Update Routes
 
@@ -46,6 +49,24 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const ZadaniaIndexLazyRoute = ZadaniaIndexLazyImport.update({
+  id: '/zadania/',
+  path: '/zadania/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/zadania/index.lazy').then((d) => d.Route))
+
+const StrefaNauczycielaIndexRoute = StrefaNauczycielaIndexImport.update({
+  id: '/strefa-nauczyciela/',
+  path: '/strefa-nauczyciela/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ZadaniaIdRoute = ZadaniaIdImport.update({
+  id: '/zadania/$id',
+  path: '/zadania/$id',
+  getParentRoute: () => rootRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -79,6 +100,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersLazyImport
       parentRoute: typeof rootRoute
     }
+    '/zadania/$id': {
+      id: '/zadania/$id'
+      path: '/zadania/$id'
+      fullPath: '/zadania/$id'
+      preLoaderRoute: typeof ZadaniaIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/strefa-nauczyciela/': {
+      id: '/strefa-nauczyciela/'
+      path: '/strefa-nauczyciela'
+      fullPath: '/strefa-nauczyciela'
+      preLoaderRoute: typeof StrefaNauczycielaIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/zadania/': {
+      id: '/zadania/'
+      path: '/zadania'
+      fullPath: '/zadania'
+      preLoaderRoute: typeof ZadaniaIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -89,6 +131,9 @@ export interface FileRoutesByFullPath {
   '/code-runner': typeof CodeRunnerRoute
   '/admin-panel': typeof AdminPanelLazyRoute
   '/users': typeof UsersLazyRoute
+  '/zadania/$id': typeof ZadaniaIdRoute
+  '/strefa-nauczyciela': typeof StrefaNauczycielaIndexRoute
+  '/zadania': typeof ZadaniaIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -96,6 +141,9 @@ export interface FileRoutesByTo {
   '/code-runner': typeof CodeRunnerRoute
   '/admin-panel': typeof AdminPanelLazyRoute
   '/users': typeof UsersLazyRoute
+  '/zadania/$id': typeof ZadaniaIdRoute
+  '/strefa-nauczyciela': typeof StrefaNauczycielaIndexRoute
+  '/zadania': typeof ZadaniaIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -104,14 +152,39 @@ export interface FileRoutesById {
   '/code-runner': typeof CodeRunnerRoute
   '/admin-panel': typeof AdminPanelLazyRoute
   '/users': typeof UsersLazyRoute
+  '/zadania/$id': typeof ZadaniaIdRoute
+  '/strefa-nauczyciela/': typeof StrefaNauczycielaIndexRoute
+  '/zadania/': typeof ZadaniaIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/code-runner' | '/admin-panel' | '/users'
+  fullPaths:
+    | '/'
+    | '/code-runner'
+    | '/admin-panel'
+    | '/users'
+    | '/zadania/$id'
+    | '/strefa-nauczyciela'
+    | '/zadania'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/code-runner' | '/admin-panel' | '/users'
-  id: '__root__' | '/' | '/code-runner' | '/admin-panel' | '/users'
+  to:
+    | '/'
+    | '/code-runner'
+    | '/admin-panel'
+    | '/users'
+    | '/zadania/$id'
+    | '/strefa-nauczyciela'
+    | '/zadania'
+  id:
+    | '__root__'
+    | '/'
+    | '/code-runner'
+    | '/admin-panel'
+    | '/users'
+    | '/zadania/$id'
+    | '/strefa-nauczyciela/'
+    | '/zadania/'
   fileRoutesById: FileRoutesById
 }
 
@@ -120,6 +193,9 @@ export interface RootRouteChildren {
   CodeRunnerRoute: typeof CodeRunnerRoute
   AdminPanelLazyRoute: typeof AdminPanelLazyRoute
   UsersLazyRoute: typeof UsersLazyRoute
+  ZadaniaIdRoute: typeof ZadaniaIdRoute
+  StrefaNauczycielaIndexRoute: typeof StrefaNauczycielaIndexRoute
+  ZadaniaIndexLazyRoute: typeof ZadaniaIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -127,6 +203,9 @@ const rootRouteChildren: RootRouteChildren = {
   CodeRunnerRoute: CodeRunnerRoute,
   AdminPanelLazyRoute: AdminPanelLazyRoute,
   UsersLazyRoute: UsersLazyRoute,
+  ZadaniaIdRoute: ZadaniaIdRoute,
+  StrefaNauczycielaIndexRoute: StrefaNauczycielaIndexRoute,
+  ZadaniaIndexLazyRoute: ZadaniaIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -142,7 +221,10 @@ export const routeTree = rootRoute
         "/",
         "/code-runner",
         "/admin-panel",
-        "/users"
+        "/users",
+        "/zadania/$id",
+        "/strefa-nauczyciela/",
+        "/zadania/"
       ]
     },
     "/": {
@@ -156,6 +238,15 @@ export const routeTree = rootRoute
     },
     "/users": {
       "filePath": "users.lazy.tsx"
+    },
+    "/zadania/$id": {
+      "filePath": "zadania/$id.tsx"
+    },
+    "/strefa-nauczyciela/": {
+      "filePath": "strefa-nauczyciela/index.tsx"
+    },
+    "/zadania/": {
+      "filePath": "zadania/index.lazy.tsx"
     }
   }
 }

@@ -7,6 +7,7 @@ import { authenticateToken } from './middlewares/authMiddleware';
 import { login, register, verifyToken } from './controllers/authController';
 import { changeRole, getUsers } from './controllers/adminController';
 import { getUserData } from './controllers/userController';
+import { addTask, deleteTaskById, editTaskById, getTaskById, getTasks } from './controllers/taskController';
 
 const app = express();
 const router = Router();
@@ -19,6 +20,11 @@ router.post('/verify-token', authenticateToken(), verifyToken);
 router.post('/get-user-data', authenticateToken(), getUserData);
 router.post('/get-all-users-data', authenticateToken(['admin']), getUsers);
 router.post('/change-role', authenticateToken(['admin']), changeRole);
+router.post('/add-task', authenticateToken(['admin', 'teacher']), addTask);
+router.post('/get-all-tasks', authenticateToken(), getTasks);
+router.post('/get-task-by-id', getTaskById);
+router.post('/edit-task-by-id', authenticateToken(['admin', 'teacher']), editTaskById);
+router.post('/delete-task-by-id', authenticateToken(['admin', 'teacher']), deleteTaskById);
 
 // APP
 app.use(cors(corsOptions));

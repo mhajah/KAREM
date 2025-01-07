@@ -13,7 +13,7 @@ export default function Header() {
   const user = useUser();
   const pathnames = location.pathname.split("/").filter((x) => x);
   return (
-    <header className="sticky top-0 flex h-16 shrink-0 items-center gap-2 border-b border-sidebar-border px-4 justify-between text-foreground">
+    <header className="top-0 flex h-16 shrink-0 items-center gap-2 border-b border-sidebar-border px-4 justify-between text-foreground">
       <div className="flex items-center gap-2">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />

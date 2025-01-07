@@ -1,8 +1,13 @@
 import { useState } from "react";
+import CodeMirror from "@uiw/react-codemirror";
+import { python } from "@codemirror/lang-python";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import { useUser } from "@/providers/UserProvider";
 
-function CodeRunner() {
+function CodeRunner({ taskID }: { taskID: string }) {
   const [code, setCode] = useState("");
   const [output, setOutput] = useState(null);
+  const { user } = useUser();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -12,7 +17,7 @@ function CodeRunner() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ code }),
+      body: JSON.stringify({ code, taskID, userID: user?.id }),
     });
 
     const data = await response.json();
@@ -20,17 +25,24 @@ function CodeRunner() {
   };
 
   return (
-    <div className="bg-code-background p-4">
-      <h1>Run Python Code</h1>
+    <div className="bg-background-color mt-10">
       <form onSubmit={handleSubmit}>
-        <textarea value={code} onChange={(e) => setCode(e.target.value)} rows={10} cols={50} className="text-black" />
+        <CodeMirror
+          value={code}
+          height="400px"
+          theme={vscodeDark}
+          extensions={[python()]}
+          onChange={(value) => setCode(value)}
+          placeholder="Umieść swój kod tutaj..."
+        />
         <br />
-        <button type="submit">Run</button>
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+          Run
+        </button>
       </form>
       {output && (
         <div>
-          <h2>Output:</h2>
-          <pre>{JSON.stringify(output, null, 2)}</pre>
+          <pre className="bg-gray-900 text-gray-200 p-4 rounded-md mt-4">{JSON.stringify(output, null, 2)}</pre>
         </div>
       )}
     </div>

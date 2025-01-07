@@ -30,7 +30,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         return;
     }
 
-    const token = jwt.sign({ id: user._id, role: user.role }, SECRET_KEY, { expiresIn: '15s' });
+    const token = jwt.sign({ id: user._id, role: user.role, name: user.name }, SECRET_KEY, { expiresIn: '15m' });
     res.json({ token });
 };
 
@@ -48,6 +48,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     hash.update(password + salt);
     const passwordHash = hash.digest('hex');
 
-    const result = await userCollection.insertOne({ name, password: passwordHash, salt, email, role: 'student' });
+    const result = await userCollection.insertOne({ name, password: passwordHash, salt, email, role: 'student', completedTasks: [] });
     res.json({ id: result.insertedId });
 };

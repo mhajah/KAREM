@@ -12,11 +12,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, minRoleValue }
   const navigate = useNavigate();
 
   if (auth.loading) {
-    return null;
+    return "Loading...";
   }
   if (!auth.isValid || auth.roleValue < minRoleValue) {
     navigate({ to: "/" });
-    return null;
+    return "Unauthorized";
   }
   return element;
 };

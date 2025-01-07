@@ -13,18 +13,20 @@ export const Route = createRootRoute({
 function RootComponent() {
   const { loading } = useUser();
   if (loading) {
-    return null;
+    return "Loading...";
   }
   return (
     <>
-      <AppSidebar />
-      <SidebarInset>
-        <Header />
-        <Toaster />
-        <main className="text-foreground p-4 ml-2">
-          <Outlet />
-        </main>
-      </SidebarInset>
+      <React.Suspense fallback="Loading...">
+        <AppSidebar />
+        <SidebarInset>
+          <Header />
+          <Toaster />
+          <main className="text-foreground p-4 mx-2">
+            <Outlet />
+          </main>
+        </SidebarInset>
+      </React.Suspense>
     </>
   );
 }

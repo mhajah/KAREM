@@ -32,6 +32,11 @@ export function AppSidebar() {
         { title: "SubItem 2-2", url: "/item2/subitem2" },
       ],
     },
+    {
+      title: "Zadania",
+      icon: Box,
+      url: "/zadania",
+    },
   ];
   return (
     <Sidebar>

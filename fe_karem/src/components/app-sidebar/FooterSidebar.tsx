@@ -1,6 +1,6 @@
 import { useUser } from "@/providers/UserProvider";
 import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
-import { User2, BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from "lucide-react";
+import { User2, BadgeCheck, ChevronsUpDown, LogOut, Sparkles } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,9 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Link } from "@tanstack/react-router";
 
 export function FooterSidebar() {
-  const { user, logout } = useUser();
+  const { user, logout, roleValue } = useUser();
   return (
     <SidebarFooter>
       {user?.name && (
@@ -49,24 +50,20 @@ export function FooterSidebar() {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
-                    <Sparkles />
-                    Upgrade to Pro
+                    <BadgeCheck />
+                    Mój profil
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <BadgeCheck />
-                    Account
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <CreditCard />
-                    Billing
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Bell />
-                    Notifications
-                  </DropdownMenuItem>
+                  {roleValue >= 2 && (
+                    <Link to="/strefa-nauczyciela">
+                      <DropdownMenuItem>
+                        <Sparkles />
+                        Strefa nauczyciela
+                      </DropdownMenuItem>
+                    </Link>
+                  )}
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => logout()}>
