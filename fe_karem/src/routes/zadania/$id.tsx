@@ -1,7 +1,7 @@
 import { getTaskById, Task } from "@/api/api-endpoints";
 import CodeRunner from "@/components/code-runner/CodeRunner";
 import { TaskTag } from "@/components/tasks/TaskTag";
-import { createFileRoute, useParams } from "@tanstack/react-router";
+import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { Clock, Database, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -30,7 +30,13 @@ function RouteComponent() {
 
   return (
     <>
-      <div className="mb-5 flex space-x-4">{task?.tags.map((tag) => <TaskTag key={tag} tag={tag} />)}</div>
+      <div className="mb-5 flex space-x-4">
+        {task?.tags.map((tag) => (
+          <Link to={`/zadania?tag=${tag}`} key={tag}>
+            <TaskTag key={tag} tag={tag} />
+          </Link>
+        ))}
+      </div>
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{task?.name}</h1>
       <p className="leading-7 [&:not(:first-child)]:mt-6">{task?.description}</p>
       <div className="mt-10 flex space-x-4">

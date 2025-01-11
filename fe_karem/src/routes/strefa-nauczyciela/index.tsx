@@ -1,11 +1,12 @@
 import { getTasks, Task } from "@/api/api-endpoints";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import { AddTaskDialog } from "@/components/tasks/AddTask";
 import { TasksList } from "@/components/tasks/TasksList";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/strefa-nauczyciela/")({
-  component: RouteComponent,
+  component: () => <ProtectedRoute element={<RouteComponent />} minRoleValue={2} />,
 });
 
 function RouteComponent() {

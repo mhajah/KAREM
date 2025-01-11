@@ -66,7 +66,7 @@ export function AddTaskForm({ tasks, fetchTasks }: { tasks: Task[]; fetchTasks: 
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
 
-  const tagsOptions = tasks?.map((task) => task.tags)?.flat();
+  const tagsOptions = Array.from(new Set(tasks?.map((task) => task.tags)?.flat()));
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
