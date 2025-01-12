@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as CodeRunnerImport } from './routes/code-runner'
 import { Route as StrefaNauczycielaIndexImport } from './routes/strefa-nauczyciela/index'
 import { Route as ZadaniaIdImport } from './routes/zadania/$id'
+import { Route as BlogIdImport } from './routes/blog/$id'
 
 // Create Virtual Routes
 
@@ -68,6 +69,12 @@ const ZadaniaIdRoute = ZadaniaIdImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const BlogIdRoute = BlogIdImport.update({
+  id: '/blog/$id',
+  path: '/blog/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -98,6 +105,13 @@ declare module '@tanstack/react-router' {
       path: '/users'
       fullPath: '/users'
       preLoaderRoute: typeof UsersLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/blog/$id': {
+      id: '/blog/$id'
+      path: '/blog/$id'
+      fullPath: '/blog/$id'
+      preLoaderRoute: typeof BlogIdImport
       parentRoute: typeof rootRoute
     }
     '/zadania/$id': {
@@ -131,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/code-runner': typeof CodeRunnerRoute
   '/admin-panel': typeof AdminPanelLazyRoute
   '/users': typeof UsersLazyRoute
+  '/blog/$id': typeof BlogIdRoute
   '/zadania/$id': typeof ZadaniaIdRoute
   '/strefa-nauczyciela': typeof StrefaNauczycielaIndexRoute
   '/zadania': typeof ZadaniaIndexLazyRoute
@@ -141,6 +156,7 @@ export interface FileRoutesByTo {
   '/code-runner': typeof CodeRunnerRoute
   '/admin-panel': typeof AdminPanelLazyRoute
   '/users': typeof UsersLazyRoute
+  '/blog/$id': typeof BlogIdRoute
   '/zadania/$id': typeof ZadaniaIdRoute
   '/strefa-nauczyciela': typeof StrefaNauczycielaIndexRoute
   '/zadania': typeof ZadaniaIndexLazyRoute
@@ -152,6 +168,7 @@ export interface FileRoutesById {
   '/code-runner': typeof CodeRunnerRoute
   '/admin-panel': typeof AdminPanelLazyRoute
   '/users': typeof UsersLazyRoute
+  '/blog/$id': typeof BlogIdRoute
   '/zadania/$id': typeof ZadaniaIdRoute
   '/strefa-nauczyciela/': typeof StrefaNauczycielaIndexRoute
   '/zadania/': typeof ZadaniaIndexLazyRoute
@@ -164,6 +181,7 @@ export interface FileRouteTypes {
     | '/code-runner'
     | '/admin-panel'
     | '/users'
+    | '/blog/$id'
     | '/zadania/$id'
     | '/strefa-nauczyciela'
     | '/zadania'
@@ -173,6 +191,7 @@ export interface FileRouteTypes {
     | '/code-runner'
     | '/admin-panel'
     | '/users'
+    | '/blog/$id'
     | '/zadania/$id'
     | '/strefa-nauczyciela'
     | '/zadania'
@@ -182,6 +201,7 @@ export interface FileRouteTypes {
     | '/code-runner'
     | '/admin-panel'
     | '/users'
+    | '/blog/$id'
     | '/zadania/$id'
     | '/strefa-nauczyciela/'
     | '/zadania/'
@@ -193,6 +213,7 @@ export interface RootRouteChildren {
   CodeRunnerRoute: typeof CodeRunnerRoute
   AdminPanelLazyRoute: typeof AdminPanelLazyRoute
   UsersLazyRoute: typeof UsersLazyRoute
+  BlogIdRoute: typeof BlogIdRoute
   ZadaniaIdRoute: typeof ZadaniaIdRoute
   StrefaNauczycielaIndexRoute: typeof StrefaNauczycielaIndexRoute
   ZadaniaIndexLazyRoute: typeof ZadaniaIndexLazyRoute
@@ -203,6 +224,7 @@ const rootRouteChildren: RootRouteChildren = {
   CodeRunnerRoute: CodeRunnerRoute,
   AdminPanelLazyRoute: AdminPanelLazyRoute,
   UsersLazyRoute: UsersLazyRoute,
+  BlogIdRoute: BlogIdRoute,
   ZadaniaIdRoute: ZadaniaIdRoute,
   StrefaNauczycielaIndexRoute: StrefaNauczycielaIndexRoute,
   ZadaniaIndexLazyRoute: ZadaniaIndexLazyRoute,
@@ -222,6 +244,7 @@ export const routeTree = rootRoute
         "/code-runner",
         "/admin-panel",
         "/users",
+        "/blog/$id",
         "/zadania/$id",
         "/strefa-nauczyciela/",
         "/zadania/"
@@ -238,6 +261,9 @@ export const routeTree = rootRoute
     },
     "/users": {
       "filePath": "users.lazy.tsx"
+    },
+    "/blog/$id": {
+      "filePath": "blog/$id.tsx"
     },
     "/zadania/$id": {
       "filePath": "zadania/$id.tsx"

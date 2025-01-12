@@ -2,8 +2,10 @@ import { Sidebar, SidebarContent, SidebarHeader } from "@/components/ui/sidebar"
 import { Box, CodeXml, Home, NotebookPen } from "lucide-react";
 import { NavMain } from "./NavMain";
 import { FooterSidebar } from "./FooterSidebar";
+import { algorithmList } from "@/articles";
+import React from "react";
 
-export function AppSidebar() {
+export const AppSidebar = React.memo(() => {
   const menuItems = [
     {
       title: "O projekcie",
@@ -24,13 +26,13 @@ export function AppSidebar() {
       ],
     },
     {
-      title: "Nauka Reacta",
+      title: "Algorytmy",
       icon: Box,
       isActive: true,
-      items: [
-        { title: "SubItem 2-1", url: "/item2/subitem1" },
-        { title: "SubItem 2-2", url: "/item2/subitem2" },
-      ],
+      items: algorithmList.map((article) => ({
+        title: article.title || article.id,
+        url: `/blog/${article.id}`,
+      })),
     },
     {
       title: "Zadania",
@@ -49,4 +51,4 @@ export function AppSidebar() {
       <FooterSidebar />
     </Sidebar>
   );
-}
+});

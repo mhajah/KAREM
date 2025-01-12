@@ -22,7 +22,7 @@ function RootComponent() {
         <SidebarInset>
           <Header />
           <Toaster />
-          <main className="text-foreground p-4 mx-2">
+          <main className="text-foreground p-4 md:p-8 mx-2">
             <Outlet />
           </main>
         </SidebarInset>
