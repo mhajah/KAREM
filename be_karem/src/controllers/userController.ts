@@ -8,7 +8,11 @@ export const getUserData = async (req: AuthenticatedRequest, res: Response) => {
   if (!req.user) {
     res.status(401).json({ error: 'User is not authenticated' });
     return;
-}
-const user = await userCollection.findOne({ _id: new ObjectId(req.user.id) });
-res.json(user);
+  }
+  const user = await userCollection.findOne({ _id: new ObjectId(req.user.id) });
+  const userData = {
+    completedTasks: user?.completedTasks || [],
+    // ...
+  }
+  res.json(userData);
 }

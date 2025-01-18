@@ -20,7 +20,7 @@ export interface TestCase {
 }
 
 export interface Task {
-  id: string;
+  taskId: string;
   _id?: string;
   name: string;
   description: string;

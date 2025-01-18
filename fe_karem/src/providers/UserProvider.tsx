@@ -9,6 +9,7 @@ interface User {
   password: string;
   email: string;
   role: string;
+  additionalUserData?: AdditionalUserData;
 }
 
 interface UserContextType {
@@ -20,6 +21,18 @@ interface UserContextType {
   isValid: boolean;
   role: string | null;
   roleValue: number;
+  additionalUserData: AdditionalUserData | null;
+}
+
+interface UserTaskInfo {
+  taskId: string;
+  completedAt: Date;
+  attempts: number;
+  status: "success" | "failure" | "timeout";
+}
+
+interface AdditionalUserData {
+  completedTasks: UserTaskInfo[];
 }
 
 const roleLevel = {
@@ -30,11 +43,21 @@ const roleLevel = {
 
 const UserContext = createContext<UserContextType | null>(null);
 
+const fetchUserData = async () => {
+  try {
+    const response = await api.post("/get-user-data");
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch user data:", error);
+  }
+};
+
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isValid, setIsValid] = useState<boolean>(false);
   const [role, setRole] = useState<string | null>(null);
+  const [additionalUserData, setUserData] = useState<AdditionalUserData | null>(null);
   const { toast } = useToast();
 
   const token = localStorage.getItem("token");
@@ -87,6 +110,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(verifiedUser);
       setIsValid(true);
       setRole(verifiedUser.role);
+      const additionalData = await fetchUserData();
+      if (additionalData) {
+        setUserData(additionalData);
+      }
     } catch (error) {
       console.error("Token verification failed:", error);
       logout();
@@ -102,7 +129,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const roleValue = role ? roleLevel[role as keyof typeof roleLevel] : 0;
 
   return (
-    <UserContext.Provider value={{ user, setUser, loading, logout, login, isValid, role, roleValue }}>
+    <UserContext.Provider value={{ user, setUser, loading, logout, login, isValid, role, roleValue, additionalUserData }}>
       {children}
     </UserContext.Provider>
   );

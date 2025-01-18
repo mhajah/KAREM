@@ -14,7 +14,6 @@ import { Checkbox } from "../ui/checkbox";
 import { toast } from "@/hooks/use-toast";
 import api from "@/api/api";
 import { AxiosError } from "axios";
-import { DialogTrigger } from "@radix-ui/react-dialog";
 import { useUser } from "@/providers/UserProvider";
 import { Task } from "@/api/api-endpoints";
 
@@ -53,16 +52,23 @@ const formSchema = z.object({
     }),
   testCases: z
     .array(
-      z.any().refine((value) => value, {
-        message: "Minimum 1 znak.",
+      z.object({
+        input: z.string().min(1, "Input jest wymagany."),
+        output: z.string().min(1, "Output jest wymagany."),
       }),
     )
-    .nonempty({
-      message: "Pole wymagane.",
-    }),
+    .nonempty("Musisz podać co najmniej jeden przypadek testowy."),
 });
 
-export function AddTaskForm({ tasks, fetchTasks }: { tasks: Task[]; fetchTasks: () => void }) {
+export function AddTaskForm({
+  tasks,
+  fetchTasks,
+  setIsDialogOpen,
+}: {
+  tasks: Task[];
+  fetchTasks: () => void;
+  setIsDialogOpen: (state: boolean) => void;
+}) {
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
 
@@ -88,7 +94,6 @@ export function AddTaskForm({ tasks, fetchTasks }: { tasks: Task[]; fetchTasks: 
     name: "testCases",
   });
 
-  // submit function
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await api.post("/add-task", {
@@ -106,6 +111,7 @@ export function AddTaskForm({ tasks, fetchTasks }: { tasks: Task[]; fetchTasks: 
         });
         fetchTasks();
       }
+      setIsDialogOpen(false);
     } catch (error) {
       console.error("Failed to add task:", error);
       if (error instanceof AxiosError) {
@@ -293,7 +299,7 @@ export function AddTaskForm({ tasks, fetchTasks }: { tasks: Task[]; fetchTasks: 
                           </Button>
                         </div>
                       ))}
-                      <Button type="button" onClick={() => append({ input: [], output: [] })}>
+                      <Button type="button" onClick={() => append({ input: "", output: "" })}>
                         Dodaj przypadek testowy
                       </Button>
                     </div>
@@ -306,9 +312,9 @@ export function AddTaskForm({ tasks, fetchTasks }: { tasks: Task[]; fetchTasks: 
         </div>
 
         <span className="flex justify-end pt-8">
-          <DialogTrigger asChild>
+          <span className="flex justify-end pt-8">
             <Button type="submit">Dodaj</Button>
-          </DialogTrigger>
+          </span>
         </span>
       </form>
     </Form>
