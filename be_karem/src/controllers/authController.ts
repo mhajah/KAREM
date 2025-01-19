@@ -2,15 +2,23 @@ import { Request, Response } from 'express';
 import { userCollection } from '../config/db';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import { ObjectId } from 'mongodb';
 
 const SECRET_KEY = 'secret_key';
 
-export const verifyToken = (req: Request, res: Response) => {
-    res.json({
-        message: 'Token is valid',
-        user: (req as any).user,
-    });
+export const verifyToken = async (req: Request, res: Response) => {
+    const newObjectId = new ObjectId((req as any).user.id);
+    try {
+        const user = await userCollection.findOne({ _id: newObjectId });
+        res.json({
+            message: 'Token is valid',
+            user: user,
+        });
+    } catch (error) {
+        res.status(401).json({ message: 'Invalid token' });
+    }
 };
+
 
 export const login = async (req: Request, res: Response): Promise<void> => {
     const { name, password } = req.body;

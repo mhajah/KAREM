@@ -92,7 +92,7 @@ export function EditTaskForm({ task, fetchTasks }: { task: Task; fetchTasks: () 
         toast({
           title: "Aktualizacja",
           description: "Zadanie zostało zaaktualizowane.",
-          duration: 8000,
+          duration: 4000,
         });
       }
     } catch (error) {

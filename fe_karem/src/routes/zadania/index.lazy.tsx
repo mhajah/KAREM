@@ -3,9 +3,10 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 import { getTasks, Task } from "@/api/api-endpoints";
 import { TaskPreview } from "@/components/tasks/TaskPreview";
 import { Input } from "@/components/ui/input";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export const Route = createLazyFileRoute("/zadania/")({
-  component: Tasks,
+  component: () => <ProtectedRoute element={<Tasks />} minRoleValue={1} />,
 });
 
 function Tasks() {
