@@ -8,36 +8,25 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as UsersImport } from './routes/users'
 import { Route as CodeRunnerImport } from './routes/code-runner'
+import { Route as AdminPanelImport } from './routes/admin-panel'
+import { Route as IndexImport } from './routes/index'
+import { Route as ZadaniaIndexImport } from './routes/zadania/index'
 import { Route as StrefaNauczycielaIndexImport } from './routes/strefa-nauczyciela/index'
 import { Route as ZadaniaIdImport } from './routes/zadania/$id'
 import { Route as BlogIdImport } from './routes/blog/$id'
 
-// Create Virtual Routes
-
-const UsersLazyImport = createFileRoute('/users')()
-const AdminPanelLazyImport = createFileRoute('/admin-panel')()
-const IndexLazyImport = createFileRoute('/')()
-const ZadaniaIndexLazyImport = createFileRoute('/zadania/')()
-
 // Create/Update Routes
 
-const UsersLazyRoute = UsersLazyImport.update({
+const UsersRoute = UsersImport.update({
   id: '/users',
   path: '/users',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/users.lazy').then((d) => d.Route))
-
-const AdminPanelLazyRoute = AdminPanelLazyImport.update({
-  id: '/admin-panel',
-  path: '/admin-panel',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/admin-panel.lazy').then((d) => d.Route))
+} as any)
 
 const CodeRunnerRoute = CodeRunnerImport.update({
   id: '/code-runner',
@@ -45,17 +34,23 @@ const CodeRunnerRoute = CodeRunnerImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexLazyRoute = IndexLazyImport.update({
+const AdminPanelRoute = AdminPanelImport.update({
+  id: '/admin-panel',
+  path: '/admin-panel',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
 
-const ZadaniaIndexLazyRoute = ZadaniaIndexLazyImport.update({
+const ZadaniaIndexRoute = ZadaniaIndexImport.update({
   id: '/zadania/',
   path: '/zadania/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/zadania/index.lazy').then((d) => d.Route))
+} as any)
 
 const StrefaNauczycielaIndexRoute = StrefaNauczycielaIndexImport.update({
   id: '/strefa-nauczyciela/',
@@ -83,7 +78,14 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin-panel': {
+      id: '/admin-panel'
+      path: '/admin-panel'
+      fullPath: '/admin-panel'
+      preLoaderRoute: typeof AdminPanelImport
       parentRoute: typeof rootRoute
     }
     '/code-runner': {
@@ -93,18 +95,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CodeRunnerImport
       parentRoute: typeof rootRoute
     }
-    '/admin-panel': {
-      id: '/admin-panel'
-      path: '/admin-panel'
-      fullPath: '/admin-panel'
-      preLoaderRoute: typeof AdminPanelLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/users': {
       id: '/users'
       path: '/users'
       fullPath: '/users'
-      preLoaderRoute: typeof UsersLazyImport
+      preLoaderRoute: typeof UsersImport
       parentRoute: typeof rootRoute
     }
     '/blog/$id': {
@@ -132,7 +127,7 @@ declare module '@tanstack/react-router' {
       id: '/zadania/'
       path: '/zadania'
       fullPath: '/zadania'
-      preLoaderRoute: typeof ZadaniaIndexLazyImport
+      preLoaderRoute: typeof ZadaniaIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -141,45 +136,45 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
+  '/admin-panel': typeof AdminPanelRoute
   '/code-runner': typeof CodeRunnerRoute
-  '/admin-panel': typeof AdminPanelLazyRoute
-  '/users': typeof UsersLazyRoute
+  '/users': typeof UsersRoute
   '/blog/$id': typeof BlogIdRoute
   '/zadania/$id': typeof ZadaniaIdRoute
   '/strefa-nauczyciela': typeof StrefaNauczycielaIndexRoute
-  '/zadania': typeof ZadaniaIndexLazyRoute
+  '/zadania': typeof ZadaniaIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
+  '/admin-panel': typeof AdminPanelRoute
   '/code-runner': typeof CodeRunnerRoute
-  '/admin-panel': typeof AdminPanelLazyRoute
-  '/users': typeof UsersLazyRoute
+  '/users': typeof UsersRoute
   '/blog/$id': typeof BlogIdRoute
   '/zadania/$id': typeof ZadaniaIdRoute
   '/strefa-nauczyciela': typeof StrefaNauczycielaIndexRoute
-  '/zadania': typeof ZadaniaIndexLazyRoute
+  '/zadania': typeof ZadaniaIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
+  '/admin-panel': typeof AdminPanelRoute
   '/code-runner': typeof CodeRunnerRoute
-  '/admin-panel': typeof AdminPanelLazyRoute
-  '/users': typeof UsersLazyRoute
+  '/users': typeof UsersRoute
   '/blog/$id': typeof BlogIdRoute
   '/zadania/$id': typeof ZadaniaIdRoute
   '/strefa-nauczyciela/': typeof StrefaNauczycielaIndexRoute
-  '/zadania/': typeof ZadaniaIndexLazyRoute
+  '/zadania/': typeof ZadaniaIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/code-runner'
     | '/admin-panel'
+    | '/code-runner'
     | '/users'
     | '/blog/$id'
     | '/zadania/$id'
@@ -188,8 +183,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/code-runner'
     | '/admin-panel'
+    | '/code-runner'
     | '/users'
     | '/blog/$id'
     | '/zadania/$id'
@@ -198,8 +193,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/code-runner'
     | '/admin-panel'
+    | '/code-runner'
     | '/users'
     | '/blog/$id'
     | '/zadania/$id'
@@ -209,25 +204,25 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute
+  IndexRoute: typeof IndexRoute
+  AdminPanelRoute: typeof AdminPanelRoute
   CodeRunnerRoute: typeof CodeRunnerRoute
-  AdminPanelLazyRoute: typeof AdminPanelLazyRoute
-  UsersLazyRoute: typeof UsersLazyRoute
+  UsersRoute: typeof UsersRoute
   BlogIdRoute: typeof BlogIdRoute
   ZadaniaIdRoute: typeof ZadaniaIdRoute
   StrefaNauczycielaIndexRoute: typeof StrefaNauczycielaIndexRoute
-  ZadaniaIndexLazyRoute: typeof ZadaniaIndexLazyRoute
+  ZadaniaIndexRoute: typeof ZadaniaIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexLazyRoute: IndexLazyRoute,
+  IndexRoute: IndexRoute,
+  AdminPanelRoute: AdminPanelRoute,
   CodeRunnerRoute: CodeRunnerRoute,
-  AdminPanelLazyRoute: AdminPanelLazyRoute,
-  UsersLazyRoute: UsersLazyRoute,
+  UsersRoute: UsersRoute,
   BlogIdRoute: BlogIdRoute,
   ZadaniaIdRoute: ZadaniaIdRoute,
   StrefaNauczycielaIndexRoute: StrefaNauczycielaIndexRoute,
-  ZadaniaIndexLazyRoute: ZadaniaIndexLazyRoute,
+  ZadaniaIndexRoute: ZadaniaIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -241,8 +236,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/code-runner",
         "/admin-panel",
+        "/code-runner",
         "/users",
         "/blog/$id",
         "/zadania/$id",
@@ -251,16 +246,16 @@ export const routeTree = rootRoute
       ]
     },
     "/": {
-      "filePath": "index.lazy.tsx"
+      "filePath": "index.tsx"
+    },
+    "/admin-panel": {
+      "filePath": "admin-panel.tsx"
     },
     "/code-runner": {
       "filePath": "code-runner.tsx"
     },
-    "/admin-panel": {
-      "filePath": "admin-panel.lazy.tsx"
-    },
     "/users": {
-      "filePath": "users.lazy.tsx"
+      "filePath": "users.tsx"
     },
     "/blog/$id": {
       "filePath": "blog/$id.tsx"
@@ -272,7 +267,7 @@ export const routeTree = rootRoute
       "filePath": "strefa-nauczyciela/index.tsx"
     },
     "/zadania/": {
-      "filePath": "zadania/index.lazy.tsx"
+      "filePath": "zadania/index.tsx"
     }
   }
 }
