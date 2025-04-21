@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { getTasks, Task } from '@/api/api-endpoints'
+import { useTasks } from '@/api/api-endpoints'
 import { TaskPreview } from '@/components/tasks/TaskPreview'
 import { Input } from '@/components/ui/input'
 import ProtectedRoute from '@/components/ProtectedRoute'
@@ -10,20 +10,11 @@ export const Route = createFileRoute('/zadania/')({
 })
 
 function Tasks() {
-  const [tasks, setTasks] = React.useState<Task[]>([])
+  const { data: tasks = []} = useTasks()
   const parameterTag = new URLSearchParams(window.location.search).get('tag')
   const [searchQuery, setSearchQuery] = React.useState<string>(
     parameterTag ?? '',
   )
-
-  const fetchTasks = async () => {
-    const tasks = await getTasks()
-    setTasks(tasks)
-  }
-
-  React.useEffect(() => {
-    fetchTasks()
-  }, [])
 
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch = task.name

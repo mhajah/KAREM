@@ -1,4 +1,4 @@
-import { deleteTaskById, Task } from "@/api/api-endpoints";
+import { Task, useDeleteTask } from "@/api/api-endpoints";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Check, DeleteIcon, Edit, ExternalLink, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
@@ -7,15 +7,8 @@ import { EditTaskForm } from "./EditTaskForm";
 import { difficultyMap } from "./diffcultyMap";
 import { Button } from "../ui/button";
 
-export function TasksList({ tasks, fetchTasks }: { tasks: Task[]; fetchTasks: () => void }) {
-  const deleteTask = async (taskId: string) => {
-    try {
-      await deleteTaskById(taskId);
-      fetchTasks();
-    } catch (error) {
-      console.error("Failed to delete task:", error);
-    }
-  };
+export function TasksList({ tasks }: { tasks: Task[] }) {
+  const { mutate: deleteTask } = useDeleteTask();
   return (
     <div>
       <Table className="overflow-clip">
@@ -55,7 +48,7 @@ export function TasksList({ tasks, fetchTasks }: { tasks: Task[]; fetchTasks: ()
                       <DialogHeader>
                         <DialogTitle>Edycja zadania</DialogTitle>
                       </DialogHeader>
-                      <EditTaskForm task={task} fetchTasks={fetchTasks} />
+                      <EditTaskForm task={task} />
                     </DialogContent>
                   </Dialog>
                   <Dialog>

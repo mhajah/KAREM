@@ -15,7 +15,7 @@ import { toast } from "@/hooks/use-toast";
 import api from "@/api/api";
 import { AxiosError } from "axios";
 import { useUser } from "@/providers/UserProvider";
-import { Task } from "@/api/api-endpoints";
+import { Task, useTasks } from "@/api/api-endpoints";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -62,14 +62,13 @@ const formSchema = z.object({
 
 export function AddTaskForm({
   tasks,
-  fetchTasks,
   setIsDialogOpen,
 }: {
   tasks: Task[];
-  fetchTasks: () => void;
   setIsDialogOpen: (state: boolean) => void;
 }) {
   const [error, setError] = useState<string | null>(null);
+  const { refetch } = useTasks()
   const { user } = useUser();
 
   const tagsOptions = Array.from(new Set(tasks?.map((task) => task.tags)?.flat()));
@@ -109,7 +108,7 @@ export function AddTaskForm({
           description: "Zadanie zostało dodane.",
           duration: 8000,
         });
-        fetchTasks();
+        refetch();
       }
       setIsDialogOpen(false);
     } catch (error) {

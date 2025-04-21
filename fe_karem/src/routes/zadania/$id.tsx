@@ -1,9 +1,8 @@
-import { getTaskById, Task } from "@/api/api-endpoints";
+import { useTask } from "@/api/api-endpoints";
 import CodeRunner from "@/components/code-runner/CodeRunner";
 import { TaskTag } from "@/components/tasks/TaskTag";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { Clock, Database, RotateCcw } from "lucide-react";
-import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/zadania/$id")({
   component: RouteComponent,
@@ -11,22 +10,7 @@ export const Route = createFileRoute("/zadania/$id")({
 
 function RouteComponent() {
   const { id } = useParams({ from: "/zadania/$id" });
-  const [task, setTask] = useState<Task | null>(null);
-
-  const fetchTask = async (taskId: string) => {
-    try {
-      const fetchedTask = await getTaskById(taskId);
-      setTask(fetchedTask);
-    } catch (error) {
-      console.error("Failed to fetch task:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (id) {
-      fetchTask(id);
-    }
-  }, [id]);
+  const { data: task } = useTask(id);
 
   return (
     <>

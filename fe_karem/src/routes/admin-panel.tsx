@@ -1,5 +1,5 @@
 import api from '@/api/api'
-import { getUsers, User } from '@/api/api-endpoints'
+import { useUsers } from '@/api/api-endpoints'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import {
   Select,
@@ -21,7 +21,6 @@ import {
 import { roleLevel } from '@/constants'
 import { createFileRoute } from '@tanstack/react-router'
 import React from 'react'
-import { useEffect } from 'react'
 
 export const Route = createFileRoute('/admin-panel')({
   component: () => (
@@ -30,22 +29,27 @@ export const Route = createFileRoute('/admin-panel')({
 })
 
 function AdminPanel() {
-  const [users, setUsers] = React.useState<User[]>([])
+  const {
+    data: users = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useUsers()
 
-  const fetchUsers = () => {
-    getUsers().then((users) => setUsers(users))
+  const changeRole = (userId: string, newRole: string) => {
+    api.post('/change-role', { id: userId, role: newRole })
+      .then(() => {
+        refetch() 
+      })
   }
 
-  const changeRole = (value: string, role: string) => {
-    console.log(value, role)
-    api.post('/change-role', { id: value, role }).then(() => fetchUsers())
+  if (isLoading) {
+    return <div>Ładowanie użytkowników…</div>
   }
 
-  useEffect(() => {
-    fetchUsers()
-  }, [])
-
-  console.log('users:', users)
+  if (isError) {
+    return <div>Wystąpił błąd podczas pobierania użytkowników.</div>
+  }
 
   return (
     <div>

@@ -15,7 +15,7 @@ import { toast } from "@/hooks/use-toast";
 import api from "@/api/api";
 import { AxiosError } from "axios";
 import { DialogTrigger } from "@radix-ui/react-dialog";
-import { Task } from "@/api/api-endpoints";
+import { Task, useTasks } from "@/api/api-endpoints";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -61,8 +61,9 @@ const formSchema = z.object({
     }),
 });
 
-export function EditTaskForm({ task, fetchTasks }: { task: Task; fetchTasks: () => void }) {
+export function EditTaskForm({ task }: { task: Task }) {
   const [error, setError] = useState<string | null>(null);
+  const { refetch } = useTasks()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -88,7 +89,7 @@ export function EditTaskForm({ task, fetchTasks }: { task: Task; fetchTasks: () 
     try {
       const response = await api.post("/edit-task-by-id", { id: task._id, ...values });
       if (response.status === 200) {
-        fetchTasks();
+        refetch();
         toast({
           title: "Aktualizacja",
           description: "Zadanie zostało zaaktualizowane.",

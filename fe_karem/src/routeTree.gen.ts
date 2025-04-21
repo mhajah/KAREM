@@ -17,6 +17,7 @@ import { Route as AdminPanelImport } from './routes/admin-panel'
 import { Route as IndexImport } from './routes/index'
 import { Route as ZadaniaIndexImport } from './routes/zadania/index'
 import { Route as StrefaNauczycielaIndexImport } from './routes/strefa-nauczyciela/index'
+import { Route as ProfilIndexImport } from './routes/profil/index'
 import { Route as ZadaniaIdImport } from './routes/zadania/$id'
 import { Route as BlogIdImport } from './routes/blog/$id'
 
@@ -55,6 +56,12 @@ const ZadaniaIndexRoute = ZadaniaIndexImport.update({
 const StrefaNauczycielaIndexRoute = StrefaNauczycielaIndexImport.update({
   id: '/strefa-nauczyciela/',
   path: '/strefa-nauczyciela/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfilIndexRoute = ProfilIndexImport.update({
+  id: '/profil/',
+  path: '/profil/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -116,6 +123,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ZadaniaIdImport
       parentRoute: typeof rootRoute
     }
+    '/profil/': {
+      id: '/profil/'
+      path: '/profil'
+      fullPath: '/profil'
+      preLoaderRoute: typeof ProfilIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/strefa-nauczyciela/': {
       id: '/strefa-nauczyciela/'
       path: '/strefa-nauczyciela'
@@ -142,6 +156,7 @@ export interface FileRoutesByFullPath {
   '/users': typeof UsersRoute
   '/blog/$id': typeof BlogIdRoute
   '/zadania/$id': typeof ZadaniaIdRoute
+  '/profil': typeof ProfilIndexRoute
   '/strefa-nauczyciela': typeof StrefaNauczycielaIndexRoute
   '/zadania': typeof ZadaniaIndexRoute
 }
@@ -153,6 +168,7 @@ export interface FileRoutesByTo {
   '/users': typeof UsersRoute
   '/blog/$id': typeof BlogIdRoute
   '/zadania/$id': typeof ZadaniaIdRoute
+  '/profil': typeof ProfilIndexRoute
   '/strefa-nauczyciela': typeof StrefaNauczycielaIndexRoute
   '/zadania': typeof ZadaniaIndexRoute
 }
@@ -165,6 +181,7 @@ export interface FileRoutesById {
   '/users': typeof UsersRoute
   '/blog/$id': typeof BlogIdRoute
   '/zadania/$id': typeof ZadaniaIdRoute
+  '/profil/': typeof ProfilIndexRoute
   '/strefa-nauczyciela/': typeof StrefaNauczycielaIndexRoute
   '/zadania/': typeof ZadaniaIndexRoute
 }
@@ -178,6 +195,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/blog/$id'
     | '/zadania/$id'
+    | '/profil'
     | '/strefa-nauczyciela'
     | '/zadania'
   fileRoutesByTo: FileRoutesByTo
@@ -188,6 +206,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/blog/$id'
     | '/zadania/$id'
+    | '/profil'
     | '/strefa-nauczyciela'
     | '/zadania'
   id:
@@ -198,6 +217,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/blog/$id'
     | '/zadania/$id'
+    | '/profil/'
     | '/strefa-nauczyciela/'
     | '/zadania/'
   fileRoutesById: FileRoutesById
@@ -210,6 +230,7 @@ export interface RootRouteChildren {
   UsersRoute: typeof UsersRoute
   BlogIdRoute: typeof BlogIdRoute
   ZadaniaIdRoute: typeof ZadaniaIdRoute
+  ProfilIndexRoute: typeof ProfilIndexRoute
   StrefaNauczycielaIndexRoute: typeof StrefaNauczycielaIndexRoute
   ZadaniaIndexRoute: typeof ZadaniaIndexRoute
 }
@@ -221,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   UsersRoute: UsersRoute,
   BlogIdRoute: BlogIdRoute,
   ZadaniaIdRoute: ZadaniaIdRoute,
+  ProfilIndexRoute: ProfilIndexRoute,
   StrefaNauczycielaIndexRoute: StrefaNauczycielaIndexRoute,
   ZadaniaIndexRoute: ZadaniaIndexRoute,
 }
@@ -241,6 +263,7 @@ export const routeTree = rootRoute
         "/users",
         "/blog/$id",
         "/zadania/$id",
+        "/profil/",
         "/strefa-nauczyciela/",
         "/zadania/"
       ]
@@ -262,6 +285,9 @@ export const routeTree = rootRoute
     },
     "/zadania/$id": {
       "filePath": "zadania/$id.tsx"
+    },
+    "/profil/": {
+      "filePath": "profil/index.tsx"
     },
     "/strefa-nauczyciela/": {
       "filePath": "strefa-nauczyciela/index.tsx"

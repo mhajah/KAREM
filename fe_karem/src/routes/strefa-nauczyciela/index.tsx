@@ -1,25 +1,15 @@
-import { getTasks, Task } from "@/api/api-endpoints";
+import { useTasks } from "@/api/api-endpoints";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { AddTaskDialog } from "@/components/tasks/AddTask";
 import { TasksList } from "@/components/tasks/TasksList";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/strefa-nauczyciela/")({
   component: () => <ProtectedRoute element={<RouteComponent />} minRoleValue={2} />,
 });
 
 function RouteComponent() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  const fetchTasks = async () => {
-    const tasks = await getTasks();
-    setTasks(tasks);
-  };
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  const { data: tasks = [] } = useTasks();
 
   return (
     <>
@@ -29,9 +19,9 @@ function RouteComponent() {
       </p>
       <h2 className="mt-10 mb-2 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight transition-colors first:mt-0">Zadania</h2>
       <div className="mb-5">
-        <AddTaskDialog tasks={tasks} fetchTasks={fetchTasks} />
+        <AddTaskDialog tasks={tasks} />
       </div>
-      <TasksList tasks={tasks} fetchTasks={fetchTasks} />
+      <TasksList tasks={tasks} />
     </>
   );
 }

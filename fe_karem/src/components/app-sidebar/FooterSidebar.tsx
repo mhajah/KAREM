@@ -14,6 +14,7 @@ import { Link } from "@tanstack/react-router";
 
 export function FooterSidebar() {
   const { user, logout, roleValue } = useUser();
+
   return (
     <SidebarFooter>
       {user?.name && (
@@ -49,10 +50,12 @@ export function FooterSidebar() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
+                  <Link to="/profil">
                   <DropdownMenuItem>
                     <BadgeCheck />
                     Mój profil
-                  </DropdownMenuItem>
+                    </DropdownMenuItem>
+                  </Link>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>

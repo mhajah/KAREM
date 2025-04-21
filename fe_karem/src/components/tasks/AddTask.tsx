@@ -4,7 +4,7 @@ import { AddTaskForm } from "./AddTaskForm";
 import { Task } from "@/api/api-endpoints";
 import { useState } from "react";
 
-export function AddTaskDialog({ tasks, fetchTasks }: { tasks: Task[]; fetchTasks: () => void }) {
+export function AddTaskDialog({ tasks }: { tasks: Task[] }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -16,7 +16,7 @@ export function AddTaskDialog({ tasks, fetchTasks }: { tasks: Task[]; fetchTasks
         <DialogHeader>
           <DialogTitle>Dodawanie zadania</DialogTitle>
         </DialogHeader>
-        <AddTaskForm tasks={tasks} fetchTasks={fetchTasks} setIsDialogOpen={setIsOpen} />
+        <AddTaskForm tasks={tasks} setIsDialogOpen={setIsOpen} />
       </DialogContent>
     </Dialog>
   );
