@@ -34,7 +34,7 @@ function CodeRunner({ taskID }: { taskID: string }) {
     <>
       {userTask && userTask.status === "success" && (
         <Alert className="mt-4 text-green-500 bg-green-100">
-          <p>Zadanie rozwiązane!</p>
+          <p>To zadanie zostało już przez Ciebie rozwiązane.</p>
         </Alert>
       )}
       <div className="bg-background-color mt-10">

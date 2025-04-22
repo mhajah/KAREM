@@ -5,7 +5,7 @@ import { Link } from "@tanstack/react-router";
 
 export function TaskPreview({ task }: { task: Task }) {
   return (
-    <Card className="shadow-md rounded-lg p-4 flex flex-col">
+    <Card className="shadow-md rounded-lg p-4 flex flex-col bg-sidebar border-sidebar-border">
       <CardHeader>
         <CardTitle className="lg:text-xl">{task.name}</CardTitle>
         <CardDescription className="flex-grow">

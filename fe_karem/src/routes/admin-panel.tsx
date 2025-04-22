@@ -1,6 +1,7 @@
 import api from '@/api/api'
 import { useUsers } from '@/api/api-endpoints'
 import ProtectedRoute from '@/components/ProtectedRoute'
+import { Header } from '@/components/typography/Typography'
 import {
   Select,
   SelectContent,
@@ -53,12 +54,12 @@ function AdminPanel() {
 
   return (
     <div>
-      <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl">
+      <Header variant="h2">
         Panel Administratora
-      </h1>
-      <h3 className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight">
+      </Header>
+      <Header variant="h3" className="mt-8">
         Zarejestrowani
-      </h3>
+      </Header>
       <Table>
         <TableCaption>
           Lista wszystkich zarejestrowanych użytkowników.

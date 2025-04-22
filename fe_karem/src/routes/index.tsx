@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-
+import { Header } from '@/components/typography/Typography';
 export const Route = createFileRoute('/')({
   component: RouteComponent,
 })
@@ -7,9 +7,9 @@ export const Route = createFileRoute('/')({
 function RouteComponent() {
   return (
     <div>
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+      <Header variant="h1">
         Witaj!
-      </h1>
+      </Header>
       <p className="leading-7 [&:not(:first-child)]:mt-6 lg:max-w-5xl">
         To projekt stworzony z myślą o wspieraniu nauki podstaw programowania i
         algorytmów. Inspiracją do jego powstania była moja krótka przygoda

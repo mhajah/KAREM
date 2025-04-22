@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useUser } from "@/providers/UserProvider";
 import { toast } from "@/hooks/use-toast";
 interface ProtectedRouteProps {
-  element: JSX.Element;
+  element: React.ReactNode;
   minRoleValue: number;
 }
 
