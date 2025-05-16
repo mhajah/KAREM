@@ -1,5 +1,5 @@
 import { Sidebar, SidebarContent, SidebarHeader } from "@/components/ui/sidebar";
-import { Box, CodeXml, Home, NotebookPen } from "lucide-react";
+import { Box, Home, NotebookPen } from "lucide-react";
 import { NavMain } from "./NavMain";
 import { FooterSidebar } from "./FooterSidebar";
 import { algorithmList } from "@/articles";
@@ -11,11 +11,6 @@ export const AppSidebar = React.memo(() => {
       title: "O projekcie",
       url: "/",
       icon: Home,
-    },
-    {
-      title: "Code Runner",
-      url: "/code-runner",
-      icon: CodeXml,
     },
     {
       title: "Nauka Algorytmów",

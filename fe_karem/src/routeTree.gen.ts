@@ -12,7 +12,6 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as UsersImport } from './routes/users'
-import { Route as CodeRunnerImport } from './routes/code-runner'
 import { Route as AdminPanelImport } from './routes/admin-panel'
 import { Route as IndexImport } from './routes/index'
 import { Route as ZadaniaIndexImport } from './routes/zadania/index'
@@ -26,12 +25,6 @@ import { Route as BlogIdImport } from './routes/blog/$id'
 const UsersRoute = UsersImport.update({
   id: '/users',
   path: '/users',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const CodeRunnerRoute = CodeRunnerImport.update({
-  id: '/code-runner',
-  path: '/code-runner',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -95,13 +88,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPanelImport
       parentRoute: typeof rootRoute
     }
-    '/code-runner': {
-      id: '/code-runner'
-      path: '/code-runner'
-      fullPath: '/code-runner'
-      preLoaderRoute: typeof CodeRunnerImport
-      parentRoute: typeof rootRoute
-    }
     '/users': {
       id: '/users'
       path: '/users'
@@ -152,7 +138,6 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin-panel': typeof AdminPanelRoute
-  '/code-runner': typeof CodeRunnerRoute
   '/users': typeof UsersRoute
   '/blog/$id': typeof BlogIdRoute
   '/zadania/$id': typeof ZadaniaIdRoute
@@ -164,7 +149,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin-panel': typeof AdminPanelRoute
-  '/code-runner': typeof CodeRunnerRoute
   '/users': typeof UsersRoute
   '/blog/$id': typeof BlogIdRoute
   '/zadania/$id': typeof ZadaniaIdRoute
@@ -177,7 +161,6 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/admin-panel': typeof AdminPanelRoute
-  '/code-runner': typeof CodeRunnerRoute
   '/users': typeof UsersRoute
   '/blog/$id': typeof BlogIdRoute
   '/zadania/$id': typeof ZadaniaIdRoute
@@ -191,7 +174,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin-panel'
-    | '/code-runner'
     | '/users'
     | '/blog/$id'
     | '/zadania/$id'
@@ -202,7 +184,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin-panel'
-    | '/code-runner'
     | '/users'
     | '/blog/$id'
     | '/zadania/$id'
@@ -213,7 +194,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin-panel'
-    | '/code-runner'
     | '/users'
     | '/blog/$id'
     | '/zadania/$id'
@@ -226,7 +206,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminPanelRoute: typeof AdminPanelRoute
-  CodeRunnerRoute: typeof CodeRunnerRoute
   UsersRoute: typeof UsersRoute
   BlogIdRoute: typeof BlogIdRoute
   ZadaniaIdRoute: typeof ZadaniaIdRoute
@@ -238,7 +217,6 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminPanelRoute: AdminPanelRoute,
-  CodeRunnerRoute: CodeRunnerRoute,
   UsersRoute: UsersRoute,
   BlogIdRoute: BlogIdRoute,
   ZadaniaIdRoute: ZadaniaIdRoute,
@@ -259,7 +237,6 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/admin-panel",
-        "/code-runner",
         "/users",
         "/blog/$id",
         "/zadania/$id",
@@ -273,9 +250,6 @@ export const routeTree = rootRoute
     },
     "/admin-panel": {
       "filePath": "admin-panel.tsx"
-    },
-    "/code-runner": {
-      "filePath": "code-runner.tsx"
     },
     "/users": {
       "filePath": "users.tsx"

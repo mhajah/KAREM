@@ -61,7 +61,7 @@ function CodeRunner({ taskID }: { taskID?: string }) {
         return;
     }
 
-    runCodeMutation.mutate({ code, taskID, userID: user._id.toString() });
+    runCodeMutation.mutate({ code, taskID, userID: user._id });
   };
 
   const handleCodeChange = useCallback((value: string) => {
