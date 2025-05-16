@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useUser } from '@/providers/UserProvider';
 import { Caption, Header } from '@/components/typography/Typography';
@@ -10,7 +9,6 @@ export const Route = createFileRoute('/profil/')({
 
 function Profil() {
   const { user } = useUser();
-
   const attemptsSum = user?.completedTasks?.reduce((acc, task) => acc + task.attempts, 0);
   // const easyTasks = user?.completedTasks?.filter((task) => task.difficulty === 'easy');
   // const mediumTasks = user?.completedTasks?.filter((task) => task.difficulty === 'medium');
@@ -58,9 +56,9 @@ function Profil() {
             </TableHeader>
             <TableBody>
               {user?.completedTasks?.map((task, index) => (
-                <TableRow key={task.taskId}>
+                <TableRow key={task.taskId?.toString()}>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{task.taskId}</TableCell>
+                  <TableCell>{task.taskId?.toString()}</TableCell>
                   <TableCell>{task.status}</TableCell>
                   <TableCell>{new Date(task?.completedAt).toLocaleDateString() + 
                   " " + new Date(task?.completedAt).toLocaleTimeString()}</TableCell>

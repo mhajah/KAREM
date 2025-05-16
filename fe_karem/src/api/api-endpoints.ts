@@ -14,7 +14,6 @@ export type User = {
     status: "success" | "failure" | "timeout";
   }[];
 };
-
 export interface TestCase {
   input: string;
   output: string;
@@ -35,6 +34,19 @@ export interface Task {
   maxAttempts: number;
   maxTime: number;
   maxMemory: number;
+}
+
+export interface CompletedTask {
+  taskId: string;
+  completedAt: Date;
+  attempts: number;
+  status: "success" | "failure" | "timeout";
+}
+
+export interface Class {
+  _id: string;
+  name: string;
+  year: number;
 }
 
 export function useUsers() {
@@ -82,5 +94,12 @@ export function useDeleteTask() {
         variant: "destructive",
       });
     },
+  });
+}
+
+export function useClasses() {
+  return useQuery<Class[], Error>({
+    queryKey: ["classes"],
+    queryFn: () => api.post<Class[]>("/get-all-classes").then((res) => res.data),
   });
 }

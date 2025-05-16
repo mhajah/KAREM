@@ -1,1 +1,1 @@
-fosdjkfiojsdigdjfsigke0k39qirj34 
+print(1)

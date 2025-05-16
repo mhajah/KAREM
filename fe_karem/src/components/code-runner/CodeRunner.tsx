@@ -4,39 +4,80 @@ import { python } from "@codemirror/lang-python";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { useUser } from "@/providers/UserProvider";
 import { Alert } from "../ui/alert";
+import { useToast } from "@/hooks/use-toast";
+import api from "@/api/api";
+import { useMutation } from "@tanstack/react-query";
 
-function CodeRunner({ taskID }: { taskID: string }) {
+export interface CodeRunInput {
+  code: string;
+  taskID?: string; 
+  userID?: string; 
+}
+
+export interface CodeRunOutput {
+  stdout?: string; 
+  stderr?: string;
+  error?: string; 
+}
+
+function CodeRunner({ taskID }: { taskID?: string }) {
   const [code, setCode] = useState("");
-  const [output, setOutput] = useState(null);
-  const userData = useUser();
-  const user = userData.user;
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const { user, completedTasks } = useUser();
+
+  const { toast } = useToast(); 
+
+  const runCodeMutation = useMutation<CodeRunOutput, Error, CodeRunInput>({
+    mutationFn: (data: CodeRunInput) =>
+      api.post<CodeRunOutput>("/run", data).then((res) => res.data),
+    onSuccess: () => {
+      toast({
+        title: "Kod uruchomiony",
+        description: "Pomyślnie uruchomiono kod.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Błąd uruchomienia kodu",
+        description: `Wystąpił błąd: ${error.message}`,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:5175/run", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ code, taskID, userID: user?.id }),
-    });
+    if (runCodeMutation.isPending) {
+        return;
+    }
 
-    const data = await response.json();
-    setOutput(data);
+    if (!user?._id) {
+        toast({
+             title: "Błąd",
+             description: "Musisz być zalogowany, aby uruchomić kod.",
+             variant: "destructive",
+        });
+        return;
+    }
+
+    runCodeMutation.mutate({ code, taskID, userID: user._id.toString() });
   };
 
   const handleCodeChange = useCallback((value: string) => {
     setCode(value);
   }, []);
-  const userTask = userData.additionalUserData?.completedTasks.find((task) => task.taskId === taskID);
+
+  const userTask = completedTasks?.find((task) => task.taskId === taskID);
+
   return (
     <>
       {userTask && userTask.status === "success" && (
         <Alert className="mt-4 text-green-500 bg-green-100">
-          <p>To zadanie zostało już przez Ciebie rozwiązane.</p>
+          <p>To zadanie zostało już przez Ciebie rozwiązane pomyślnie.</p>
         </Alert>
       )}
+
       <div className="bg-background-color mt-10">
         <form onSubmit={handleSubmit}>
           <CodeMirror
@@ -48,13 +89,31 @@ function CodeRunner({ taskID }: { taskID: string }) {
             placeholder="Umieść swój kod tutaj..."
           />
           <br />
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-            Run
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={runCodeMutation.isPending || !user?._id}
+          >
+            {runCodeMutation.isPending ? "Uruchamianie..." : "Uruchom"}
           </button>
         </form>
-        {output && (
+
+         {runCodeMutation.isPending && <div>Uruchamianie kodu...</div>}
+
+         {runCodeMutation.isError && (
+             <div className="text-red-500 mt-4">Błąd: {runCodeMutation.error.message}</div>
+         )}
+
+        {runCodeMutation.isSuccess && runCodeMutation.data && (
           <div>
-            <pre className="bg-gray-900 text-gray-200 p-4 rounded-md mt-4">{JSON.stringify(output, null, 2)}</pre>
+            <h3 className="text-lg font-semibold mt-4">Wynik wykonania:</h3>
+            <pre className="bg-gray-900 text-gray-200 p-4 rounded-md mt-2">
+              {runCodeMutation.data.stdout && <div>{runCodeMutation.data.stdout}</div>}
+              {runCodeMutation.data.stderr && <div className="text-yellow-500">{runCodeMutation.data.stderr}</div>}
+              {runCodeMutation.data.error && <div className="text-red-500">{runCodeMutation.data.error}</div>}
+              {!runCodeMutation.data.stdout && !runCodeMutation.data.stderr && !runCodeMutation.data.error &&
+                JSON.stringify(runCodeMutation.data, null, 2)}
+            </pre>
           </div>
         )}
       </div>

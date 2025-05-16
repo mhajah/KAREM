@@ -56,6 +56,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     hash.update(password + salt);
     const passwordHash = hash.digest('hex');
 
-    const result = await userCollection.insertOne({ name, password: passwordHash, salt, email, role: 'student', completedTasks: [] });
+    const result = await userCollection.insertOne({ name, password: passwordHash, salt, email, role: 'student', completedTasks: [], });
     res.json({ id: result.insertedId });
 };

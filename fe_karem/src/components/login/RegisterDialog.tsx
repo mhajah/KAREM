@@ -16,7 +16,7 @@ export function RegisterDialog({ link = false }: { link?: boolean }) {
         <DialogHeader>
           <DialogTitle>Rejestracja</DialogTitle>
         </DialogHeader>
-        <RegisterForm triggerRef={ref} />
+        <RegisterForm triggerRef={ref as React.RefObject<HTMLButtonElement>} />
       </DialogContent>
     </Dialog>
   );

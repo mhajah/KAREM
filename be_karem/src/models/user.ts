@@ -6,10 +6,12 @@ export interface User {
   salt: string;
   email: string;
   role: string;
-  completedTasks?: {
-    taskId: any;
-    completedAt: Date;
-    attempts: number;
-    status: "success" | "failure" | "timeout";
-  }[];
+  completedTasks?: CompletedTask[];
+}
+
+export interface CompletedTask {
+  taskId: any;
+  completedAt: Date;
+  attempts: number;
+  status: "success" | "failure" | "timeout";
 }

@@ -5,9 +5,9 @@ import { Router } from 'express';
 import { runScript } from './controllers/scriptController';
 import { authenticateToken } from './middlewares/authMiddleware';
 import { login, register, verifyToken } from './controllers/authController';
-import { changeRole, getUsers } from './controllers/adminController';
-import { getUserData } from './controllers/userController';
+import { changeRole, getUserData, getUsers } from './controllers/userController';
 import { addTask, deleteTaskById, editTaskById, getTaskById, getTasks } from './controllers/taskController';
+import { addClass, getClasses } from './controllers/classController';
 
 const app = express();
 const router = Router();
@@ -25,6 +25,9 @@ router.post('/get-all-tasks', authenticateToken(), getTasks);
 router.post('/get-task-by-id', getTaskById);
 router.post('/edit-task-by-id', authenticateToken(['admin', 'teacher']), editTaskById);
 router.post('/delete-task-by-id', authenticateToken(['admin', 'teacher']), deleteTaskById);
+
+router.post('/add-class', authenticateToken(['admin']), addClass);
+router.post('/get-all-classes', authenticateToken(['admin', 'teacher']), getClasses);
 
 // APP
 app.use(cors(corsOptions));

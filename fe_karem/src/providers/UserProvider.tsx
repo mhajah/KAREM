@@ -1,20 +1,22 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { jwtDecode } from "jwt-decode";
-import { useToast } from "@/hooks/use-toast";
+import React, { createContext, useContext, ReactNode } from "react";
+import { useToast } from "@/hooks/use-toast"; 
 import api from "@/api/api";
+import { CompletedTask } from "@/api/api-endpoints";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface User {
   id: string;
+  _id: string;
   name: string;
   password: string;
   email: string;
   role: string;
   additionalUserData?: AdditionalUserData;
+  completedTasks: CompletedTask[];  
 }
 
 interface UserContextType {
   user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
   loading: boolean;
   logout: () => void;
   login: (token: string) => void;
@@ -35,6 +37,25 @@ interface AdditionalUserData {
   completedTasks: UserTaskInfo[];
 }
 
+interface CurrentUserQueryData {
+  verifiedUser: User; 
+  additionalData: AdditionalUserData; 
+}
+
+
+interface UserContextType {
+  user: User | null;
+  loading: boolean; 
+  isValid: boolean; 
+  role: string | null; 
+  completedTasks: CompletedTask[] | null; 
+
+  logout: () => void;
+  login: (token: string) => void;
+
+  roleValue: number;
+}
+
 const roleLevel = {
   admin: 100,
   teacher: 2,
@@ -43,93 +64,108 @@ const roleLevel = {
 
 const UserContext = createContext<UserContextType | null>(null);
 
-const fetchUserData = async () => {
+const fetchCurrentUser = async (): Promise<CurrentUserQueryData | null> => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+     console.log("No token found, skipping user fetch.");
+    return null;
+  }
+
   try {
-    const response = await api.post("/get-user-data");
-    return response.data;
+    const verifyResponse = await api.post("/verify-token", null, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const verifiedUser = verifyResponse.data.user as User;
+    console.log("Token verified. Verified user:", verifiedUser);
+
+    const additionalDataResponse = await api.post("/get-user-data"); 
+    const additionalData = additionalDataResponse.data as AdditionalUserData;
+    console.log("Additional user data fetched:", additionalData);
+
+    const combinedUserData: CurrentUserQueryData = {
+      verifiedUser: verifiedUser,
+      additionalData: additionalData,
+    };
+
+    return combinedUserData;
+
   } catch (error) {
-    console.error("Failed to fetch user data:", error);
+     console.error("Failed to fetch current user data:", error);
+     throw new Error("Failed to fetch current user data");
   }
 };
 
+
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isValid, setIsValid] = useState<boolean>(false);
-  const [role, setRole] = useState<string | null>(null);
-  const [additionalUserData, setUserData] = useState<AdditionalUserData | null>(null);
+  const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const token = localStorage.getItem("token");
+  const { data, isLoading, isFetching, isSuccess } = useQuery<CurrentUserQueryData | null, Error>({
+    queryKey: ["currentUser"],
+    queryFn: fetchCurrentUser,
+    enabled: !!localStorage.getItem("token"),
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
 
   const login = (token: string) => {
-    const decoded = jwtDecode<User>(token);
-    setUser(decoded);
-    setRole(decoded.role);
-    setIsValid(true);
-    localStorage.setItem("token", token);
-    toast({
-      title: "Zalogowano",
-      description: "Zostałeś pomyślnie zalogowany.",
-      duration: 4000,
-    });
-    setLoading(false);
+    try {
+      localStorage.setItem("token", token);
+
+      queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+
+      toast({
+        title: "Zalogowano",
+        description: "Zostałeś pomyślnie zalogowany.",
+        duration: 4000,
+      });
+
+
+    } catch (err: unknown) {
+       console.error("Login error:", err);
+       toast({
+         title: "Błąd logowania",
+         description: "Wystąpił błąd podczas logowania.",
+         variant: "destructive"
+       });
+    }
   };
 
   const logout = () => {
+    console.log("Logging out...");
     localStorage.removeItem("token");
-    setUser(null);
-    setIsValid(false);
-    setRole(null);
-    setLoading(false);
+
+    queryClient.removeQueries({ queryKey: ["currentUser"] });
+
     toast({
       title: "Wylogowano",
       description: "Zostałeś wylogowany.",
       duration: 4000,
     });
-    console.log("Logged out");
+
   };
 
-  const verifyToken = async () => {
-    console.log("Verifying token...");
-    if (!token) {
-      setIsValid(false);
-      setRole(null);
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await api.post("/verify-token", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const verifiedUser = response.data.user;
-      console.log("Verified user:", verifiedUser);
-      setUser(verifiedUser);
-      setIsValid(true);
-      setRole(verifiedUser.role);
-      const additionalData = await fetchUserData();
-      if (additionalData) {
-        setUserData(additionalData);
-      }
-    } catch (error) {
-      console.error("Token verification failed:", error);
-      logout();
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    verifyToken();
-  }, [token]);
-
+  const user = data?.verifiedUser || null;
+  const loading = isLoading || isFetching;
+  const isValid = isSuccess && !!data;
+  const role = user?.role || null;
   const roleValue = role ? roleLevel[role as keyof typeof roleLevel] : 0;
 
   return (
-    <UserContext.Provider value={{ user, setUser, loading, logout, login, isValid, role, roleValue, additionalUserData }}>
+    <UserContext.Provider value={{
+        user,
+        loading,
+        logout,
+        login,
+        additionalUserData: data?.additionalData || null,
+        isValid,
+        role,
+        roleValue,
+        completedTasks: data?.additionalData?.completedTasks as CompletedTask[] || null
+     }}>
       {children}
     </UserContext.Provider>
   );
