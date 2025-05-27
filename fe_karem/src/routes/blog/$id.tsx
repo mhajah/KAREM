@@ -1,6 +1,9 @@
 import * as React from "react";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import { articleList } from "@/articles";
 import CodeMirror, { EditorView } from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
@@ -60,7 +63,7 @@ function RouteComponent() {
   return (
     <>
       <article className="overflow-x-hidden max-w-full">
-        <ReactMarkdown className="overflow-hidden" components={components}>
+        <ReactMarkdown className="overflow-hidden" components={components} remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex]}>
           {article.content}
         </ReactMarkdown>
       </article>

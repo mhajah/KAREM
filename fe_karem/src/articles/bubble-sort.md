@@ -2,7 +2,7 @@
 title: "Bubble Sort"
 tags: ["react", "markdown", "typescript"]
 date: "2025-01-11"
-author: "John Doe"
+author: "Michal"
 priority: 1
 category: "algorithms"
 ---
@@ -12,8 +12,6 @@ category: "algorithms"
 ## Wstęp
 
 Sortowanie to jeden z podstawowych problemów informatyki, stosowany w niezliczonych aplikacjach, od zarządzania danymi w bazach danych po optymalizację operacji w programach. Jednym z najprostszych i najbardziej znanych algorytmów sortowania jest **Bubble Sort** (sortowanie bąbelkowe). Pomimo swojej prostoty i ogólnej nieskuteczności w przypadku dużych zbiorów danych, algorytm ten jest często wykorzystywany w celach edukacyjnych do nauki podstawowych koncepcji programowania i analizy algorytmów.
-
-$f_x = n^3$
 
 W tym artykule przyjrzymy się szczegółowo algorytmowi Bubble Sort, jego działaniu, złożoności obliczeniowej, zaletom i wadom oraz zastosowaniom.
 
@@ -78,11 +76,11 @@ Zbior jest teraz posortowany.
 
 ### Czasowa
 
-- **Najlepszy przypadek:** O(n)
+- **Najlepszy przypadek:** $$O(n)$$
   - W przypadku, gdy zbior jest już posortowany, algorytm wykonuje jedno przejście bez żadnych zamian.
-- **Przeciętny przypadek:** O(n^2)
+- **Przeciętny przypadek:** $$O(n^2)$$
   - Dla losowych danych każdy element jest wielokrotnie porównywany i zamieniany.
-- **Najgorszy przypadek:** O(n^2)
+- **Najgorszy przypadek:** $$O(n^2)$$
   - W przypadku odwrotnie posortowanego zbioru liczba porównań i zamian jest maksymalna.
 
 ### Pamięciowa
@@ -93,21 +91,13 @@ Bubble Sort jest algorytmem **in-place**, co oznacza, że nie wymaga dodatkowej 
 
 ## Zalety i wady
 
-### Zalety
 
-1. **Prostota:**
-   - Algorytm jest łatwy do zrozumienia i zaimplementowania, co czyni go doskonałym narzędziem edukacyjnym.
-2. **Stabilność:**
-   - Bubble Sort zachowuje kolejność równych elementów, co może być ważne w pewnych zastosowaniach.
-3. **Minimalne wymagania pamięciowe:**
-   - Nie wymaga dodatkowej pamięci poza oryginalnym zbiorem danych.
+| Zalety (Advantages)                                                                 | Wady (Disadvantages)                                                                        |
+| :---------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------ |
+| 1. **Prostota:** Łatwy do zrozumienia i zaimplementowania, doskonałe narzędzie edukacyjne. | 1. **Niska wydajność:** Bardzo nieefektywny dla dużych zbiorów danych, złożoność czasowa $$O(n^2)$$. |
+| 2. **Stabilność:** Zachowuje kolejność równych elementów, co może być ważne w pewnych zastosowaniach. | 2. **Wysoka liczba operacji:** Wykonuje zbędne operacje porównywania i zamiany nawet dla prawie posortowanych danych. |
+| 3. **Minimalne wymagania pamięciowe:** Nie wymaga dodatkowej pamięci poza oryginalnym zbiorem danych, złożoność pamięciowa $$O(1)$$. |                                                                                             |
 
-### Wady
-
-1. **Niska wydajność:**
-   - Algorytm jest bardzo nieefektywny dla dużych zbiorów danych.
-2. **Wysoka liczba operacji:**
-   - Nawet w przypadkach, gdy dane są prawie posortowane, algorytm wykonuje zbędne operacje porównywania i zamiany.
 
 ---
 
