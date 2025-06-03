@@ -72,9 +72,9 @@ function Profil() {
                   <TableCell>{task.status}</TableCell>
                   <TableCell>
                     <span
-                      className={`${difficultyMap[tasks?.find((t) => t._id === task.taskId)?.difficulty as keyof typeof difficultyMap].color} rounded-md py-0.5 px-2.5 border border-transparent text-sm text-white transition-all shadow-sm`}
+                      className={`${difficultyMap[tasks?.find((t) => t._id === task.taskId)?.difficulty as keyof typeof difficultyMap]?.color} rounded-md py-0.5 px-2.5 border border-transparent text-sm text-white transition-all shadow-sm`}
                     >
-                      {difficultyMap[tasks?.find((t) => t._id === task.taskId)?.difficulty as keyof typeof difficultyMap].text}
+                      {difficultyMap[tasks?.find((t) => t._id === task.taskId)?.difficulty as keyof typeof difficultyMap]?.text}
                     </span>
                   </TableCell>
                   <TableCell>{new Date(task?.completedAt).toLocaleDateString() + 

@@ -29,9 +29,9 @@ export function TasksList({ tasks }: { tasks: Task[] }) {
               <TableCell>{task.name}</TableCell>
               <TableCell className="flex items-center justify-center">
                 <span
-                  className={`${difficultyMap[task.difficulty].color} rounded-md py-0.5 px-2.5 border border-transparent text-sm text-white transition-all shadow-sm`}
+                  className={`${difficultyMap[task.difficulty]?.color} rounded-md py-0.5 px-2.5 border border-transparent text-sm text-white transition-all shadow-sm`}
                 >
-                  {difficultyMap[task.difficulty].text}
+                  {difficultyMap[task.difficulty]?.text}
                 </span>
               </TableCell>
               <TableCell>{task.enabled ? <Check /> : <X />}</TableCell>

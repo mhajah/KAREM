@@ -216,7 +216,7 @@ export function EditTaskForm({ task }: { task: Task }) {
               name="maxTime"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Czas (s)</FormLabel>
+                  <FormLabel>Czas (ms)</FormLabel>
                   <FormControl>
                     <Input className="text-right" {...field} />
                   </FormControl>

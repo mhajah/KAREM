@@ -3,7 +3,6 @@ import { useClasses, User, useUsers } from '@/api/api-endpoints'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import { Header } from '@/components/typography/Typography'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import {
   Select,
   SelectContent,
@@ -23,7 +22,6 @@ import {
 } from '@/components/ui/table'
 import { roleLevel } from '@/constants'
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
 import { getCoreRowModel, getPaginationRowModel, useReactTable, flexRender } from '@tanstack/react-table'
 import type { Table as TableType } from '@tanstack/react-table'
 export const Route = createFileRoute('/admin-panel')({
@@ -31,23 +29,6 @@ export const Route = createFileRoute('/admin-panel')({
     <ProtectedRoute element={<AdminPanel />} minRoleValue={10} />
   ),
 })
-
-const AddClassDialog = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}>Dodaj klasę</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Dodaj klasę</DialogTitle>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
-  )
-}
 
 const Pagination = ({ table }: { table: TableType<User> }) => {
   return (
@@ -167,32 +148,8 @@ function AdminPanel() {
           ))}
         </TableBody>
       </Table>
-      <div className="flex justify-between flex-end mt-8">
-        <Header variant="h3">
-          Klasy
-        </Header>
 
-        <AddClassDialog />
-      </div>
-      <Table>
-        <TableCaption>
-          Lista wszystkich klas.
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Nazwa klasy</TableHead>
-            <TableHead>Rok</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {classes?.map((classItem) => (
-            <TableRow key={classItem._id}>
-              <TableCell>{classItem.name}</TableCell>
-              <TableCell>{classItem.year}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+
     </>
   )
 }
