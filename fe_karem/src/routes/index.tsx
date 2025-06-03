@@ -24,8 +24,15 @@ function RouteComponent() {
       <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
         Dla kogo?
       </h2>
-
-      <p className="leading-7 [&:not(:first-child)]:mt-6">...</p>
+      <p className="leading-7 [&:not(:first-child)]:mt-6">
+        Strona przeznaczona jest dla osób, które chcą się nauczyć podstaw programowania, algorytmów, czy w przyszłości Reacta. <br />
+        Zdaję sobie sprawę, że nauka programowania w szkołach średnich jest często nieefektywna, co pokazują liczne statystyki - na przykład ilość osób przystępujących do matury rozszerzonej z informatyki. <br />
+        Sytuacja nie jest lepsza w technikach, które teoretycznie posiadają całe profile, które w nazwie mają "programista", czy "informatyk", a egzaminy zawodowe - mimo stosunkowo niskiego poziomu (opinia autora) - również mają zdawalność daleką od idealnej.
+        <br />
+        Z myślą o tych wszystkich osobach, które chcą się rozwinąć, powstaje ta strona.
+        
+      </p>
+      
     </div>
   )
 }

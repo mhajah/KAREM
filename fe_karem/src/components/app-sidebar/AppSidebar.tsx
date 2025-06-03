@@ -2,7 +2,7 @@ import { Sidebar, SidebarContent, SidebarHeader } from "@/components/ui/sidebar"
 import { Box, Home, NotebookPen } from "lucide-react";
 import { NavMain } from "./NavMain";
 import { FooterSidebar } from "./FooterSidebar";
-import { algorithmList } from "@/articles";
+import { algorithmList, reactList } from "@/articles";
 import React from "react";
 
 export const AppSidebar = React.memo(() => {
@@ -13,15 +13,15 @@ export const AppSidebar = React.memo(() => {
       icon: Home,
     },
     {
-      title: "Nauka Algorytmów",
+      title: "Nauka Reacta",
       icon: NotebookPen,
-      items: [
-        { title: "SubItem 2-1", url: "/item2/subitem1" },
-        { title: "SubItem 2-2", url: "/item2/subitem2" },
-      ],
+      items: reactList.map((article) => ({
+        title: article.title || article.id,
+        url: `/blog/${article.id}`,
+      })),
     },
     {
-      title: "Algorytmy",
+      title: "Nauka algorytmów",
       icon: Box,
       isActive: true,
       items: algorithmList.map((article) => ({

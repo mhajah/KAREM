@@ -27,3 +27,4 @@ export const articleList: Article[] = Object.keys(articles).map((path) => {
 });
 
 export const algorithmList: Article[] = articleList.filter((article) => article.category === "algorithms");
+export const reactList: Article[] = articleList.filter((article) => article.category === "react");
