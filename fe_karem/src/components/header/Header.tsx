@@ -7,10 +7,12 @@ import { LoginDialog } from "../login/LoginDialog";
 import { useUser } from "@/providers/UserProvider";
 import { Button } from "../ui/button";
 import { RegisterDialog } from "../login/RegisterDialog";
+import { useTasks } from "@/api/api-endpoints";
 
 export default function Header() {
   const location = useLocation();
   const user = useUser();
+  const { data: tasks } = useTasks();
   const pathnames = location.pathname.split("/").filter((x) => x);
   return (
     <header className="top-0 flex h-16 shrink-0 items-center gap-2 border-b border-sidebar-border px-4 justify-between text-foreground">
@@ -30,7 +32,7 @@ export default function Header() {
                 <BreadcrumbItem key={to} className="hidden lg:flex">
                   <BreadcrumbSeparator />
                   <BreadcrumbPage>
-                    <Link to={to}>{value}</Link>
+                    {tasks?.find((t) => t._id === value)?.name ? <Link to={to}>{tasks?.find((t) => t._id === value)?.name}</Link> : <Link to={to}>{value}</Link>}
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               );

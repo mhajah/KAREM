@@ -1,1 +1,5 @@
-print(1)
+x = input()
+
+x.sort()
+
+print(x)
