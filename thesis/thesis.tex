@@ -1,0 +1,559 @@
+% Opcje klasy 'iithesis' opisane sa w komentarzach w pliku klasy. Za ich pomoca
+% ustawia sie przede wszystkim jezyk oraz rodzaj (lic/inz/mgr) pracy.
+\documentclass[shortabstract,inz]{iithesis}
+
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+
+%%%%% DANE DO STRONY TYTUŁOWEJ
+% Niezaleznie od jezyka pracy wybranego w opcjach klasy, tytul i streszczenie
+% pracy nalezy podac zarowno w jezyku polskim, jak i angielskim.
+% Pamietaj o madrym (zgodnym z logicznym rozbiorem zdania oraz estetyka) recznym
+% zlamaniu wierszy w temacie pracy, zwlaszcza tego w jezyku pracy. Uzyj do tego
+% polecenia \fmlinebreak.
+\polishtitle    {Implementacja internetowej\fmlinebreak platformy edukacyjnej}
+\englishtitle   {Implementation of an online educational platform}
+\polishabstract {Celem pracy inżynierskiej jest przedstawienie konceptu oraz implemetancji internetowej platformy edukacyjnej, która ma służyć jako pomoc dydaktyczna zarówno dla uczniów, jak i nauczycieli. Moje krótkie doświadczenie jako nauczyciela w jednym z wrocławskich techników zwróciło mi uwagę na ten problem. Wielu nauczycieli korzysta z zagranicznych, dużych platform, które bywają nieintuicyjne dla uczniów i charakteryzują się niewielkimi możliwościami personalizacji. Przedstawiona aplikacja jest próbą poprawienia tego stanu rzeczy.\fmlinebreak Kolejnym aspektem pracy są opracowania wybranych zagadnień z podstaw Reacta oraz algorytmów i struktur danych na bardzo podstawowym poziomie dla początkujących. }
+\englishabstract{The aim of this thesis is to present the concept and implementation of an online educational platform designed to serve as a teaching aid for both students and teachers. My brief experience as a teacher in one of Wrocław's technical high schools drew my attention to this issue. Many educators use large, foreign platforms that can be unintuitive for students and offer limited personalization options. The application presented herein is an attempt to improve this situation. \fmlinebreak Another aspect of this work is the development of selected topics from the fundamentals of React, as well as algorithms and data structures, tailored to a very basic level for beginners.}
+% w pracach wielu autorow nazwiska mozna oddzielic poleceniem \and
+\author         {Michał Hajahmadov}
+% w przypadku kilku promotorow, lub koniecznosci podania ich afiliacji, linie
+% w ponizszym poleceniu mozna zlamac poleceniem \fmlinebreak
+\advisor        {dr Wiktor Zychla}
+%\date          {}                     % Data zlozenia pracy
+% Dane do oswiadczenia o autorskim wykonaniu
+%\transcriptnum {}                     % Numer indeksu
+%\advisorgen    {dr. Jana Kowalskiego} % Nazwisko promotora w dopelniaczu
+%%%%%
+
+%%%%% WLASNE DODATKOWE PAKIETY
+%
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xurl}
+%
+%%%%% WŁASNE DEFINICJE I POLECENIA
+%
+%\theoremstyle{definition} \newtheorem{definition}{Definition}[chapter]
+%\theoremstyle{remark} \newtheorem{remark}[definition]{Observation}
+%\theoremstyle{plain} \newtheorem{theorem}[definition]{Theorem}
+%\theoremstyle{plain} \newtheorem{lemma}[definition]{Lemma}
+%\renewcommand \qedsymbol {\ensuremath{\square}}
+% Hej
+%%%%%
+
+\begin{document}
+
+%%%%% POCZĄTEK ZASADNICZEGO TEKSTU PRACY
+
+\chapter{Wprowadzenie}
+\section{Motywacja}
+W marcu 2024 r. rozpocząłem swoją pracę jako nauczyciel w Elektronicznych Zakładach Naukowych (Technikum nr 10 we Wrocławiu). Uczę podstaw programowania, algorytmów, a także tworzenia aplikacji internetowych. Szybko zauważyłem, że brakuje mi minimalistycznego narzędzia do synchronizacji z uczniami, które będzie mogło być traktowane jako zbiór wszystkich potrzebnych materiałów do nauki, a także miejsce rozwiązywania zadań. Po konsultacjach z innymi nauczycielami dowiedziałem się, że podzielają moje spostrzeżenie i stwierdziłem, że warto będzie stworzyć narzędzie, które ułatwi nam pracę.
+
+\section{KARAM - opis aplikacji}
+Ta aplikacja to platforma edukacyjna, zaprojektowana z myślą o uczniach, nauczycielach i administratorach, która oferuje zróżnicowany dostęp do treści i funkcji w zależności od przypisanej roli. Jej głównym celem jest stworzenie intuicyjnego środowiska do nauki i weryfikacji wiedzy, z naciskiem na elastyczność i możliwość dostosowania do indywidualnych potrzeb użytkownika.
+
+Domyślnie, każdy nowo utworzony użytkownik otrzymuje rolę ucznia. Uczniowie mają dostęp do materiałów edukacyjnych, które obejmują przeglądanie notatek i artykułów, a także czytanie i rozwiązywanie zadań. Dzięki sprytnemu systemowi tagów, artykuły i zadania są ze sobą ściśle powiązane, co pozwala na płynne przechodzenie od teorii do praktyki – na przykład, po zapoznaniu się z artykułem na temat "algorytmów sortowania", użytkownik może bez trudu przejść do zadań związanych z tym zagadnieniem. Każdy uczeń posiada również swój profil użytkownika, gdzie może sprawdzić podstawowe informacje o koncie i śledzić swoje postępy, takie jak lista wykonanych zadań.
+
+Nauczyciel, poza wszystkimi uprawnieniami ucznia, zyskuje dostęp do specjalnej "Strefy Nauczyciela". W tej sekcji może wzbogacać platformę o nowe treści, takie jak dodawanie zadań wraz z ich opisem i określeniem trudności. Co ważne, nauczyciele mogą również definiować przypadki testowe do zadań, co umożliwia automatyczną weryfikację rozwiązań dostarczanych przez uczniów.
+
+Najwyższy poziom uprawnień posiada administrator, który dysponuje dostępem do panelu administracyjnego. To narzędzie pozwala mu na łatwe zarządzanie rolami pozostałych użytkowników, co zapewnia elastyczność w zarządzaniu strukturą użytkowników i ich dostępem do zasobów.
+
+Zadania programistyczne w aplikacji są weryfikowane za pomocą sprawdzaczki. Oznacza to, że po napisaniu programu w języku Python, użytkownik przesyła go do systemu, który automatycznie ocenia jego poprawność na podstawie wcześniej zdefiniowanych przypadków testowych. Ten mechanizm gwarantuje obiektywną i natychmiastową informację zwrotną dla ucznia, co jest kluczowe w procesie nauki programowania.
+
+\section{Porównanie z istniejącymi rozwiązaniami}
+\subsection{Google Classroom}
+Google Classroom \cite{bib:google-classroom} to szeroko wykorzystywane narzędzie, które pozwala tworzyć wirtualne klasy i udostępniać materiały do nauki uczniom. Pozwala też zadawać zadania domowe do wykonania w określonym terminie - niestety nie pozwala na automatyczne sprawdzanie zadań programistycznych.
+
+\subsection{Solve 4}
+Solve 4 \cite{bib:solve-4} to aplikacja tworzona przez środowisko związane z Uniwersytetem Wrocławskim. Oferuje zaawansowaną sprawdzaczkę zadań wykorzystywaną w konkursach. Posiada podstronę ze statystykami użytkowników, rankingiem, aktualnościami, a także forum. Aplikacja nie posiada jednak artykułów z lekcjami.
+
+\subsection{Moodle}
+Moodle \cite{bib:moodle} to darmowa i otwarta platforma e-learningowa, która umożliwia tworzenie i zarządzanie kursami online. Daje nauczycielom narzędzia do udostępniania materiałów, prowadzenia dyskusji, oceniania zadań i śledzenia postępów uczniów. Dzięki swojej elastyczności i bogactwu funkcji Moodle jest szeroko stosowany przez szkoły, uniwersytety i firmy na całym świecie. Po dodaniu rozszerzenia "Code Runner" \cite{bib:moodle-code-runner} pozwala również na automatyczne ocenianie zadań programistycznych wysłanych przez uczniów. 
+
+\section{Plan pracy}
+
+W rozdziale drugim (Przedstawienie Wykorzystanych Rozwiązań) omówiono kluczowe technologie użyte do budowy platformy. Przedstawiono React jako podstawę frontendu, zwracając uwagę na jego deklaratywność i komponentowość. Opisano również Shadcn/ui jako zbiór edytowalnych komponentów zapewniających wysoką dostępność. W dalszej części rozdziału wyjaśniono zastosowanie MongoDB jako elastycznej bazy danych NoSQL, Express.js do budowy warstwy serwerowej oraz Dockera do konteneryzacji, co gwarantuje spójne środowiska deweloperskie i produkcyjne.
+
+W rozdziale trzecim (Wizualna Budowa Aplikacji) skupiono się na interfejsie użytkownika platformy. Zaprezentowano wygląd strony głównej i nagłówka, które oferują podstawowe opcje nawigacji i personalizacji. Omówiono minimalistyczne formularze logowania, rejestracji i dodawania zadań, posiadające walidację danych. Przedstawiono także stały element nawigacyjny – sidebar – oraz system komunikatów informujących o statusie operacji. Szczególną uwagę poświęcono reużywalnym komponentom tabel do wyświetlania danych oraz wbudowanemu edytorowi kodu (Code Mirror). Rozdział kończy prezentacja funkcji zmiany motywu na ciemny.
+
+W rozdziale czwartym (Architektura Aplikacji) szczegółowo opisano wewnętrzną strukturę platformy KARAM. Zdefiniowano główne cele aplikacji, a następnie przedstawiono podział na frontend i backend, omawiając strukturę katalogów i funkcji obu części. Zaprezentowano również model pojęciowy aplikacji oraz architektoniczny model C4 (warstwy kontenerowej i komponentowej), które wizualizują zależności między elementami systemu. Na koniec rozdziału przedstawiono metrykę kodu, podsumowującą statystyki dotyczące linii kodu w projekcie.
+
+W rozdziale piątym (Historyjki Użytkownika) zdefiniowano oczekiwane funkcjonalności z perspektywy poszczególnych ról. Szczegółowo opisano historyjki dla ucznia, obejmujące rejestrację, przeglądanie materiałów, rozwiązywanie zadań z automatyczną weryfikacją oraz śledzenie postępów na profilu. Dla nauczyciela zdefiniowano możliwość dodawania, edytowania i usuwania zadań, zaznaczając, że posiada on również uprawnienia ucznia. Do każdej historyjki dołączono konkretne kryteria akceptacji, które precyzują warunki jej spełnienia.
+
+W rozdziale szóstym (Podsumowanie) dokonano syntezy całej pracy. Omówiono wnioski z procesu implementacji, podkreślając wagę planowania, wyboru sprawdzonych technologii oraz metodyki Test-Driven Development (TDD) w zapewnieniu wysokiej jakości kodu. Przedstawiono również wyzwania napotkane podczas tworzenia aplikacji. Rozdział kończy się przedstawieniem planów na dalszy rozwój platformy KARAM, takich jak implementacja systemu CMS, rozbudowane śledzenie postępów uczniów, obsługa innych języków programowania oraz dodanie funkcji społecznościowych i systemu klas.
+
+W rozdziale siódmym (Opis Techniczny) zawarto praktyczne informacje dotyczące uruchomienia aplikacji. Wymieniono niezbędne technologie, takie jak Node.js i Docker. Następnie przedstawiono dokładną instrukcję krok po kroku, jak sklonować repozytorium i uruchomić platformę KARAM za pomocą poleceń Docker Compose, co znacznie ułatwia jej wdrożenie.
+
+\chapter{Przedstawienie wykorzystywanch rozwiązań}
+
+\section{React}
+\subsection{Opis}
+Współczesne aplikacje webowe charakteryzują się dynamicznością i złożonością, co stawia przed programistami wyzwania w zakresie efektywnego zarządzania interfejsem użytkownika (UI). W odpowiedzi na te potrzeby powstało wiele bibliotek i frameworków JavaScript, z których jednym z najpopularniejszych i najbardziej wpływowych jest React \cite{bib:react}. Stworzony i rozwijany przez firmę Facebook, React to deklaratywna, komponentowa biblioteka JavaScript do budowania interfejsów użytkownika. Jego głównym celem jest uproszczenie procesu tworzenia skomplikowanych UI, czyniąc go bardziej przewidywalnym i łatwiejszym do utrzymania.
+\subsection{Motywacje użycia}
+Zdecydowana większość aplikacji to warstwa front-endowa, zatem bardzo ważne było wybranie stabilnego i efektywnego rozwiązania, z dużą społecznością i dostępem do obszernej dokumentacji. To wszystko zapewnia React.
+
+\section{Shadcn/ui}
+\subsection{Opis}
+Shadcn/ui \cite{bib:shadcn} to nie jest typowa biblioteka komponentów Reacta, którą instalujemy jako całość. Zamiast tego, to zbiór gotowych do użycia, ale w pełni edytowalnych komponentów, które dodajemy bezpośrednio do swojego projektu. Dzięki temu mamy całkowitą kontrolę nad ich wyglądem i zachowaniem, stylizując je za pomocą Tailwind CSS \cite{bib:tailwind} i opierając się na solidnej, dostępnej bazie z Radix UI \cite{bib:radix-ui}. Takie podejście pozwala na szybkie budowanie interfejsów, jednocześnie dając swobodę tworzenia własnego, spójnego design systemu.
+
+
+
+\subsection{Motywacje użycia}
+Rozwój aplikacji internetowych w ostatnich latach znacząco przyspieszył, a wraz z nim rosło zapotrzebowanie na efektywne narzędzia i biblioteki, które usprawniają proces tworzenia interfejsów użytkownika. React.js, jako jedna z najpopularniejszych bibliotek do budowania UI, stał się centrum ekosystemu pełnego różnorodnych rozwiązań. Wśród nich szczególne miejsce zajmują biblioteki komponentów, które oferują predefiniowane, gotowe do użycia elementy interfejsu (przyciski, pola formularzy, nawigacje itp.). Ich celem jest przyspieszenie rozwoju, zapewnienie spójności wizualnej oraz ułatwienie utrzymania kodu.
+
+Tradycyjnie, biblioteki komponentów dostarczały kompletne pakiety, które zawierały zarówno kod źródłowy komponentów, jak i ich stylizację. Podejście to, choć wygodne na początku, często prowadziło do problemów z elastycznością, możliwością dostosowania i tzw. "vendor lock-in", gdzie deweloperzy byli związani z konkretnymi decyzjami stylistycznymi i architektonicznymi danej biblioteki. W odpowiedzi na te wyzwania, pojawiło się nowe podejście, które kładzie nacisk na "composable" i "unstyled" komponenty, pozwalając deweloperom na pełną kontrolę nad wyglądem i zachowaniem.
+
+W tym kontekście, biblioteka shadcn/ui wyróżnia się jako innowacyjne rozwiązanie, które redefiniuje podejście do wykorzystywania komponentów w aplikacjach React.js. Zamiast być tradycyjną biblioteką, którą instalujemy jako zależność, shadcn/ui oferuje kolekcję gotowych do użycia, ale jednocześnie całkowicie edytowalnych i konfigurowalnych komponentów, które są dodawane bezpośrednio do projektu dewelopera. Celem tej pracy jest dogłębne opisanie filozofii, architektury i kluczowych zalet shadcn/ui, a także wskazanie jego miejsca w ekosystemie Reacta.
+-
+Poza tym komponenty z shadcn/ui charakteryzują się wysoką dostępnością (accessibility) dzięki wykorzystaniu Radix UI - gwarantuje to dostęp do aplikacji dla każdego użytkownika.
+
+\newpage
+\section{Pozostałe technologie}
+\subsection{MongoDB}
+MongoDB \cite{bib:mongo-db} to wiodąca baza danych NoSQL, klasyfikowana jako bazodanowy system dokumentowy. Zamiast tradycyjnych tabel i wierszy, MongoDB przechowuje dane w elastycznych, JSON-podobnych dokumentach, co pozwala na łatwe modelowanie danych, które są dynamiczne i zmieniające się. Jest to baza danych, która oferuje wysoką skalowalność i wydajność, idealna do obsługi dużych zbiorów danych i dynamicznych aplikacji.
+
+Wybór MongoDB wynika z jego elastyczności schematu, która jest kluczowa w szybko rozwijających się projektach, gdzie wymagania dotyczące danych mogą często się zmieniać. Skalowalność pozioma MongoDB (sharding) umożliwia łatwe rozszerzanie pojemności bazy danych wraz ze wzrostem liczby użytkowników i danych, a jej wysoka wydajność jest niezbędna do obsługi nowoczesnych aplikacji webowych. Duża społeczność i obszerna dokumentacja dodatkowo wspierają rozwój i utrzymanie.
+
+\subsection{Express.js}
+Express.js \cite{bib:express-js} to minimalistyczny i elastyczny framework webowy dla Node.js \cite{bib:node-js}, który dostarcza solidny zestaw funkcji do tworzenia aplikacji webowych i API. Jest to de facto standard w ekosystemie Node.js do budowania warstwy serwerowej. Pozwala na szybkie tworzenie routingu, obsługę żądań HTTP i zarządzanie middleware, co sprawia, że jest idealny do budowania wydajnych i skalowalnych aplikacji backendowych.
+
+Użycie Express.js motywowane jest jego prostotą i elastycznością, co pozwala na szybkie prototypowanie i rozwijanie API. Dzięki temu, że jest to framework oparty na Node.js, umożliwia jednolity stos technologiczny (JavaScript zarówno na frontendzie, jak i backendzie), co ułatwia zarządzanie kodem i przyspiesza rozwój. Duża społeczność i dostępność wielu modułów middleware sprawiają, że Express.js jest potężnym narzędziem do budowy niezawodnych serwerów.
+
+\subsection{Docker}
+Główną motywacją do użycia Dockera \cite{bib:docker} jest zapewnienie spójnego środowiska deweloperskiego, testowego i produkcyjnego. Eliminuje to problem "działa u mnie", ponieważ aplikacja i jej zależności są spakowane w kontenerze. Docker umożliwia też łatwe uruchamianie odizolowanego kodu, co jest szczególnie przydatne przy implementacji sprawdzaczki. 
+
+
+
+\chapter{Wizualna budowa aplikacji}
+
+\section{Strona główna i nagłówek}
+Po otwarciu aplikacji pojawia się Strona Główna z krótkim opisem i przywitaniem użytkownika.
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/strona-glowna-niezalogowany.png}}}$
+    \caption[]{Widok strony głównej niezalogowanego użytkownika}
+    \label{fig:strona-glowna}
+\end{figure}
+
+Z jej poziomu widzimy nagłówek, który będzie towarzyszył użytkownikowi na każdej podstronie - a w nim przycisk do rejestracji, zalogowania/wylogowania, przycisk do zmiany motywu strony, a także w przypadku zalogowanego administratora strony odnośnik do "Admin Panelu".
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/strona-glowna-zalogowany.png}}}$
+    \caption[]{Widok strony głównej zalogowanego użytkownika}
+    \label{fig:strona-glowna-zalogowany}
+\end{figure}
+
+\section{Formularze}
+Aplikacja ma możliwość tworzenia kont użytkowników, więc oczywiście zawiera formularze logowania i rejestracji. Formularze są minimalistyczne, wyskakują w formie dialogu po kliknięciu w przycisk.
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/logowanie.png}}}$
+    \caption[]{Formularz logowania}
+    \label{fig:formularz-logowania}
+\end{figure}
+
+Formularze posiadają również podstawową walidację danych wprowadzonych przez użytkownika - sprawdzają, czy pola nie są puste oraz czy adres email i hasło są w odpowiednim formacie (patrz rysunek 3.4).
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/rejestracja.png}}}$
+    \caption[]{Formularz rejestracji - demonstracja walidacji}
+    \label{fig:formularz-rejestracji}
+\end{figure}
+
+Najbardziej rozbudowanym formularzem na stronie jest ten, który służy do dodawania nowych zadań z poziomu Panelu Nauczyciela - również jest w pełni walidowany.
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=0.8\textwidth]{figures/dodawanie-zadania.png}}}$
+    \caption[]{Formularz dodawania zadania}
+    \label{fig:formularz-zadanie}
+\end{figure}
+
+\newpage
+
+\section{Sidebar}
+Sidebar, to kolejny (po nagłówku) komponent aplikacji, który jest zawsze dostępny - choć można go ukryć. Służy on do nawigacji po stronie - możemy z niego przejść na większość dostępnych podstron - listy zadań, artykułów (lekcji), strony głównej, a także - po zalogowaniu - do profilu użytkownika i "Strefy Nauczyciela" (dostępnej dla nauczycieli i administratorów).
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[height=1.3\textwidth]{figures/sidebar.png}}}$
+    \caption[]{Pasek boczny - sidebar}
+    \label{fig:sidebar}
+\end{figure}
+
+\newpage
+
+\section{Komunikaty}
+Wszystkie komunikaty - informacja o logowaniu, uruchomieniu kodu, dodaniu zadania, czy błędzie wyświetlane są w formie niewielkich okienek w prawym dolnym rogu. 
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/komunikaty.png}}}$
+    \caption[]{Przykładowe komunikaty}
+    \label{fig:komunikaty}
+\end{figure}
+
+\section{Tabele}
+
+Tabele w aplikacji pojawiają się w wielu miejscach - na profilu użytkownika, w panelu admina i strefie nauczyciela. Jest to reużywalny komponent, który pozwala serwować użytkownikowi informacje w wygodny sposób.
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/strefa-nauczyciela-table.png}}}$
+    \caption[]{Tabela w strefie nauczyciela. Dzięki przyciskom akcji dla każdego zadania możemy: przejść do wybranego zadania, edytować je lub usunąć.}
+    \label{fig:strefa-nauczyciela}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/profil.png}}}$
+    \caption[]{Tabela na profilu - demonstruje wykonane przez użytkownika zadania, poza tym, w wygodne formie przedstawione są statystyki dotyczące aktywności.}
+    \label{fig:profil-użytkownika}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/admin-panel.png}}}$
+    \caption[]{Tabela w panelu administratora - z jej poziomu jednym kliknięciem można zmienić rangę użytkownika}
+    \label{fig:admin-panel}
+\end{figure}
+
+\section{Edytor kodu}
+
+Aby umożliwić użytkownikowi wygodne wysyłanie zadań, użyto Code Mirror - bardzo popularnej biblioteki w Reatcie.
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/edytor-kodu.png}}}$
+    \caption[]{Edytor kodu Pythona}
+    \label{fig:edytor-kodu}
+\end{figure}
+
+\section{Dark Mode}
+Strona posiada dwa motywy - ciemny i jasny. Wersja kolorystyczna jest domyślnie ustawiana na podstawie preferencji systemowych użytkownika. Oczywiście można to zmienić.
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=0.9\textwidth]{figures/theme-button.png}}}$
+    \caption[]{Przyciski do zmiany motywu (w zależności od aktualnego)}
+    \label{fig:przyciski-motyw}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/dark1.png}}}$
+    \caption[]{Artykuł - wersja ciemna)}
+    \label{fig:dark1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/dark2.png}}}$
+    \caption[]{Strefa Nauczyciela - wersja ciemna}
+    \label{fig:dark2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/dark3.png}}}$
+    \caption[]{Formularz logowania - wersja ciemna}
+    \label{fig:dark3}
+\end{figure}
+
+\chapter{Architektura aplikacji}
+\section{Cele aplikacji}
+\begin{itemize}
+    \item Rejestracja kont użytkowników i logowanie się.
+    \item Podział użytkowników na rangi: administratora, nauczyciela i ucznia.
+    \item Wykonywanie zadań programistycznych w Pythonie.
+    \item Automatyczne ocenianie zadań - przez wykonanie i porównanie przypadków testowych.
+    \item Sprawdzenia swoich statystyk, wykonanych zadań na profilu.
+    \item Możliwość dodawania, edycji i usuwania zadań (dla nauczycieli i administratorów)
+    \item Możliwość edycji rangi użytkownika (dla administratorów)
+\end{itemize}
+
+\section{Struktura aplikacji}
+
+Struktura aplikacji składa się przede wszystkim z backendu i frontendu, wydzielone zostały dwa katalogi: \texttt{be-karem} oraz \texttt{fe-karem}. 
+
+\subsection{Frontend}
+W wersji frontendowej trzon stanowi katalog \texttt{src}, a w nim plik \texttt{main.tsx}, w którym zdefiniowane są przede wszystkim providery - komponenty, które udostępniają dane lub funkcje innym komponentom w drzewie aplikacji za pomocą Context API. Poza tym w \texttt{src} znajdują się inne katalogi:
+\begin{itemize}
+    \item \texttt{routes} - definicja wszystkich ścieżek w postaci plików. Jest to tzw. \texttt{file based routing}: to podejście, w którym struktura plików i katalogów w projekcie aplikacji bezpośrednio odwzorowuje ścieżki URL. Na przykład, plik \texttt{pages/about.js} automatycznie stworzy ścieżkę \texttt{/about}, a \texttt{pages/products/\$id} obsłuży dynamiczne ścieżki takie jak \texttt{/products/123}. Główną zaletą jest intuicyjność i automatyzacja – programista nie musi ręcznie konfigurować tras, ponieważ system budowania robi to za niego. Jest to alternatywa do popularnego \texttt{code-based-routing}u.
+
+    \item \texttt{providers} - autorskie providery, znajduje się tu provider odpowiedzialny za motyw oraz informacje o użytkowniku.
+
+    \item \texttt{api} - architekturę warstwy dostępu do danych, połączenie definicji typów z logiką interakcji z API.
+
+    \item \texttt{articles} - artykuły w postaci plików \texttt{.md}, które są wyświetlane w aplikacji.
+
+    \item \texttt{hooks} - definicja specjalne funkcji, które pozwalają "zahaczyć się" w stan i cykl życia komponentów funkcyjnych.
+
+    \item \texttt{components} - najobszerniejszy ze wszystkich katalogów, posiada definicje wszystkich stworzonych i używanych na stronie komponentów, takich jak formularze, sidebar, przyciski itd.
+
+\end{itemize}
+
+Reszta plików, takie jak \texttt{eslint.config.js, .prettierrc.cjs, vite.config.ts, .gitignore} to pliki konfiguracyjne - do automatycznego formatowania kodu, budowania projektu czy systemu kontroli wersji.
+
+\subsection{Backend}
+
+Backend aplikacji również napisany jest w TypeScriptcie, dlatego struktura na pierwszy rzut oka jest podobna. Tutaj również większość plików znajduje się w \texttt{src}, ale dalsza struktura wygląda następująco:
+
+\begin{itemize}
+    \item \texttt{app.ts} - plik stanowi główny punkt wejścia do serwerowej części aplikacji, która została zbudowana w oparciu o architekturę RESTful API. Odpowiada za konfigurację serwera Express.js, definiowanie globalnych middleware'ów oraz centralne zarządzanie routingiem.
+
+    \item \texttt{middlewares} - katalog middlewares zawiera funkcje pośredniczące, które są wykonywane przed lub po obsłużeniu żądania HTTP przez kontroler. Ich głównym celem jest modyfikacja obiektów żądania (req) i odpowiedzi (res), wykonywanie operacji na danych, autoryzacja, logowanie czy obsługa błędów. Użycie middleware'ów promuje modularność i ponowne wykorzystanie kodu. Aktualnie znajduje się tam jeden middleware do autentykacji, który weryfikuje token JWT. \cite{bib:jwt} Fragment kodu został tego middleware'a został przedstawiony na rysunku 4.1.
+
+    \item \texttt{controllers} - katalog jest sercem "logiki biznesowej" aplikacji. Pliki w tym katalogu zawierają funkcje, które odpowiadają za obsługę żądań HTTP, interakcję z modelem danych oraz przygotowanie odpowiedzi dla klienta. Kontrolery są mostem między routerem a modelem danych.
+
+    \item \texttt{models} - katalog zawiera definicje struktury danych, które są używane w całej aplikacji.
+
+    \item \texttt{configs} - katalog config jest przeznaczony do przechowywania wszystkich konfiguracji aplikacji, które mogą się różnić w zależności od środowiska (np. dewelopment, testy, produkcja). Oddzielenie konfiguracji od kodu źródłowego ułatwia zarządzanie środowiskami i zwiększa elastyczność aplikacji.
+
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/auth-middleware.png}}}$
+    \caption[]{Middleware do autentykacji}
+    \label{fig:auth-middleware}
+\end{figure}
+
+\newpage
+
+\section{Model pojęciowy}
+Model pojęciowy aplikacji przedstawiony na rysunku 4.2.
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/model-pojeciowy.png}}}$
+    \caption[]{Model pojęciowy aplikacji}
+    \label{fig:model-pojeciowy}
+\end{figure}
+
+\section{Umieszczanie plików na stronie}
+W celu zapewnienia efektywnego zarządzania treścią, artykuły na stronie są dynamicznie ładowane z katalogu articles. Każdy artykuł przechowywany jest jako osobny plik z rozszerzeniem .md (Markdown). Takie podejście jest znacznie bardziej wydajne w porównaniu do umieszczania każdego artykułu w oddzielnych plikach .tsx lub .html, co generowałoby zbędne duplikacje kodu i utrudniało skalowanie.
+
+Na początku każdego pliku .md znajdują się metadane, które służą do definiowania kluczowych właściwości artykułu. Przykład struktury metadanych przedstawiono na rysunku 4.3.
+
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/articles-metadane.png}}}$
+    \caption[]{Początek każdego pliku .md}
+    \label{fig:articles-metadane}
+\end{figure}
+
+Dzięki tym metadanym, w szczególności polu category, system automatycznie kategoryzuje artykuły i dynamicznie umieszcza je w Sidebarze, zapewniając intuicyjną nawigację dla użytkowników.
+\section{Architektoniczny model C4}
+
+Model C4 to hierarchiczny zestaw diagramów służący do wizualizacji, dokumentowania i komunikowania architektury oprogramowania. Zaczyna od widoku wysokiego poziomu (kontekst systemu), a następnie umożliwia zagłębianie się w coraz bardziej szczegółowe warstwy (kontenery, komponenty, kod), aby lepiej zrozumieć strukturę i zależności.
+\newpage
+\subsection{Model C4 warstwy kontenerowej}
+Na rysunku 4.4 opracowanie modelu C4 drugiej warstwy.
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=0.8\textwidth]{figures/c4-2.png}}}$
+    \caption[]{Model C4 warstwy drugiej}
+    \label{fig:model-c4-kontenerowa}
+\end{figure}
+
+\subsection{Model C4 warstwy komponentowej}
+Na rysunku 4.5 opracowanie modelu C4 trzeciej warstwy.
+\begin{figure}[H]
+	\centering
+	$\vcenter{\hbox{\includegraphics[width=1\textwidth]{figures/c4-components.png}}}$
+    \caption[]{Model C4 warstwy trzeciej}
+    \label{fig:model-c4-komponentowa}
+\end{figure}
+
+\section{Metryka kodu}
+Wykonanie polecenia \texttt{cloc} na katalogach \texttt{/src} na frontendowej i backendowej wersji aplikacji przedstawione w tabeli 4.1.
+
+\begin{table}[H]
+    \begin{tabular}{|l|l|l|l|l|}
+    \hline
+    \textbf{Język}   & \textbf{Pliki} & \textbf{Puste linie} & \textbf{Linie z komentarzami} & \textbf{Linie kodu} \\ \hline
+    TypeScript       & 80             & 575                  & 77                           & 5189                \\ \hline
+    JavaScript & 1             & 0                   & 9                           & 268                \\ \hline
+    CSS              & 1              & 4                    & 4                             & 78                  \\ \hline
+    Python             & 2              & 6                    & 3                             & 23                  \\ \hline
+    JSON             & 2              & 0                    & 0                             & 13                  \\ \hline
+    \textbf{ŁĄCZNIE} & \textbf{86}    & \textbf{585}         & \textbf{93}                  & \textbf{5571}       \\ \hline
+    \end{tabular}
+    \caption{\label{tab:stats-code}Tabela podsumowujący statystyki kodu aplikacji KARAM}
+\end{table}
+
+
+\chapter{Historyjki użytkownika}
+
+\section{Uczeń}
+Jako uczeń, chcę:
+\begin{itemize}
+    \item Rejestrować się i logować do aplikacji, aby mieć dostęp do spersonalizowanych treści i śledzić swoje postępy.
+    \begin{itemize}
+        \item Kryteria akceptacji:
+        \begin{itemize}
+            \item Widzę opcje "Zarejestruj" i "Zaloguj" na stronie głównej/w nagłówku.
+            \item Po kliknięciu "Zarejestruj" pojawia się formularz rejestracji z polami na nazwę, e-mail i hasło.
+            \item Formularz rejestracji waliduje wprowadzone dane.
+            \item Po udanej rejestracji jestem automatycznie logowany do aplikacji.
+            \item Po kliknięciu "Zaloguj" pojawia się formularz logowania z polami na e-mail i hasło.
+            \item Po udanym zalogowaniu mam dostęp do wszystkich funkcji przypisanych do roli ucznia.
+        \end{itemize}
+    \end{itemize}
+    \item Przeglądać artykuły edukacyjne, aby móc uczyć się nowych zagadnień z podstaw i struktury danych lub Reacta.
+    \begin{itemize}
+        \item Kryteria akceptacji:
+        \begin{itemize}
+            \item Widzę listę dostępnych artykułów po przejściu do sekcji "Artykuły w sidebarze.
+            \item Mogę otworzyć i czytać treści artykułów.
+            \item Artykuły są pogrupowane tematycznie lub zawierają tagi, które ułatwiają mi nawigację.
+        \end{itemize}
+    \end{itemize}
+
+    \item Rozwiązywać zadania programistyczne, aby ćwiczyć umiejętności sprawdzać swoją wiedzę.
+    \begin{itemize}
+        \item Kryteria akceptacji:
+        \begin{itemize}
+            \item Mam dostęp do listy zadań po przejściu do sekcji "Zadania".
+            \item Mogę wybrać zadanie i wyświetlićjego opis oraz treść.
+            \item Posiadam dostęp do edytora kodu, w którym mogę napisać swoje rozwiązanie w Pythonie.
+            \item Mogę wysłać swoje rozwiązanie do automatycznej weryfikacji.
+            \item Otrzymuję natychmiastową informację zwrotną o poprawności mojego rozwiązania na podstawie przypadków testowych.
+        \end{itemize}
+    \end{itemize}
+
+    \item Przeglądać swój profil użytkownika, aby śledzić postępy w nauce.
+    \begin{itemize}
+        \item Kryteria akceptacji:
+        \begin{itemize}
+            \item Mogę przejść do swojego profilu z sidebaru.
+            \item Widzę podstawowe informacje o moim koncie.
+            \item Mam dostęp do listy wykonanych zadań.
+            \item Mogę sprawdzić statystyki dotyczące mojej aktywności.
+        \end{itemize}
+    \end{itemize}
+
+    \item Otrzymywać komunikaty o statusie operacji, aby być na bieżąco z tym, co dzieje się w aplikacji.
+    \begin{itemize}
+        \item Kryteria akceptacji:
+        \begin{itemize}
+            \item Widzę krótkie, nieinwazyjne komunikaty w prawym dolnym rogu ekranu informujące o sukcesie lub błędzie.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\section{Nauczyciel}
+Jako nauczyciel, chcę:
+\begin{itemize}
+    \item Dodawać nowe zadania programistyczne, aby wzbogacić platformę o nowe treści dla uczniów.
+    \begin{itemize}
+        \item Kryteria akceptacji:
+        \begin{itemize}
+            \item Mam dostęp do "Strefy Nauczyciela" z paska bocznego.
+            \item W "Strefie Nauczyciela" widzę opcję dodawania nowego zadania.
+            \item Mogęwypełnić formularz dodawania zadania, podając jego pis, treść, poziom trudności oraz definicje przypadków testowych.
+            \item Formularz waliduje wprowadzone dane.
+            \item Po dodaniu zadania pojawia się ono na liście zadań dla uczniów.
+        \end{itemize}
+    \end{itemize}
+    \item Edytować istniejące zadania programistyczne, aby móc aktualizować ich treść lub przypadki testowe.
+    \begin{itemize}
+        \item Kryteria akceptacji:
+        \begin{itemize}
+            \item W "Strefie Nauczyciela" widzę listę dodanych zadań w formie tabeli.
+            \item Przy każdym zadaniu mam przycisk "Edytuj".
+            \item Po kliknięciu "Edytuj" mogę modyfikować wszystkie pola zadania (opis, treść, trudność, przypadki testowe).
+            \item Zmiany są zapisywane i widoczne dla uczniów.
+        \end{itemize}
+    \end{itemize}
+    \item Usuwać zadania programistyczne, aby zarządzać treścią aplikacji.
+    \begin{itemize}
+        \item Kryteria akceptacji:
+        \begin{itemize}
+            \item W "Strefie Nauczyciela| widzę listę dodanych zadań.
+            \item Przy każdym zadaniu mam przycisk "Usuń".
+            \item Po potwierdzeniu usunięcia zadanie znika z listy i nie jest już dostępne dla uczniów.
+        \end{itemize}
+    \end{itemize}
+    \item Wszystkie historyjki ucznia, również mnie dotyczą, ponieważ jako nauczyciel również mogę korzystać z zasobów edukacyjnych i rozwiązywać zadania.
+\end{itemize}
+
+\chapter{Podsumowanie}
+
+\section{Wnioski}
+Proces implementacji platformy edukacyjnej KARAM rozpoczął się od kluczowego etapu planowania struktury aplikacji, konfiguracji środowiska oraz doboru odpowiednich technologii. To fundamentalne przygotowanie pozwoliło na stworzenie solidnych fundamentów, które są niezbędne do efektywnego pisania kodu i umożliwiają przyszłe modyfikacje. Szczególną uwagę przyłożono do metodyki Test-Driven Development (TDD), która, choć wymagająca, znacząco zminimalizowała czas poświęcony na debugowanie. Dzięki TDD, nawet przy częstych zmianach w kodzie, udało się utrzymać wysoką jakość i stabilność aplikacji.
+
+Wybór Reacta podyktowany był jego stabilnością, dojrzałą społecznością i bogactwem bibliotek, w tym Shadcn/ui, który zapewniał wysoką dostępność komponentów (dzięki Radix UI) i elastyczność stylizacji z Tailwind CSS. Na backendzie, Express.js i MongoDB okazały się idealnym połączeniem ze względu na ich prostotę, szybkość prototypowania i elastyczność w zarządzaniu schematami danych, co było kluczowe dla szybko rozwijającego się projektu.
+
+Ważnym aspektem implementacji było również wdrożenie Dockera. Użycie kontenerów rozwiązało problem niespójności środowisk deweloperskich i produkcyjnych, eliminując typowe "u mnie działa".
+
+Mimo zastosowania szeroko akceptowanych i dojrzałych technologii, nie obyło się bez mniejszych wyzwań. Zarządzanie globalnym stanem aplikacji front-endowej (np. dane użytkownika) i zapewnienie spójności interfejsu użytkownika w różnych sekcjach aplikacji wymagało starannego projektowania komponentów i wykorzystania Context API w React. Podobnie, optymalizacja zapytań do bazy danych i obsługa błędów na backendzie były stałymi elementami procesu deweloperskiego, dążącymi do zapewnienia maksymalnej wydajności i niezawodności.
+
+Podsumowując, budowa aplikacji była nie tylko implementacją zestawu funkcjonalności, ale przede wszystkim procesem, w którym podjęto szereg strategicznych decyzji technologicznych. Stawiano na sprawdzonych dostawców i metodyki, takie jak TDD, aby stworzyć solidną, rozszerzalną i łatwą w utrzymaniu aplikację, która w przyszłości będzie mogła ewoluować wraz z potrzebami edukacyjnymi.
+
+\section{Dalszy rozwój aplikacji}
+Aplikacja obecnie jest w formie gotowej do użycia, lecz jest spora liczba rzeczy, które można dodać lub rozwinąć. Poniżej przedstawiono parę planów i pomysłów na przyszłe rozwijanie aplikacji KARAM.
+
+\subsection{Możliwość dodawania artykułów z poziomu frontendu aplikacji}
+Mimo że system wczytywania artykułów z plików .md jest zdecydowanie wygodniejszy niż tworzenie całych plików .html/.tsx do każdego artykułu, to wciąż można to zrobić lepiej. Aby stworzyć system typu CMS (Content Management System) \cite{bib:cms} potrzebna jest możliwość dodawania artykułów z poziomu frontendu aplikacji - tak aby nauczyciel, który chce opublikować artykuł, nie musiał mieć dostępu do plików serwera, na którym zahostowana jest strona.
+
+\subsection{Implementacja śledzenia postępów uczniów}
+Stworzenie rozbudowanej podstrony ze statystykami każdego ucznia, tak aby nauczyciele mogli w łatwiejszy sposób kontrolować postępy wybranych osób.
+
+\subsection{Dodanie obsługi innych języków programowania}
+Aktualnie sprawdzaczka przyjmuje tylko programy w języku Python, który mimo swojej popularności nie jest jedynym językiem, od którego uczniowie zaczynają naukę. W przyszłości można dodać języki takie jak C++, czy JavaScript.
+
+\subsection{Wprowadzenie funkcji społecznościowych}
+Dodanie forum dyskusyjnego, czatu lub sekcji komentarzy pod artykułami i zadaniami, aby umożliwić interakcję między uczniami i nauczycielami, wspierając budowanie aktywnej społeczności wokół platformy.
+
+\subsection{Dodanie klas}
+Dodanie systemu klas i przydzielania do nich uczniów znacznie ułatwiłoby nauczycielom obcowanie z platformą.
+
+\chapter{Opis techniczny}
+\section{Wymagane technologie}
+Aplikacja wymaga przede wszystkim Node.js (w wersji 18+) oraz daemona Dockera (najłatwiej zainstalować Docker Desktop). Warto też zainstalować MongoDB Compass \cite{bib:mongo-db-compass} - GUI do zarządzania bazą danych. Reszta zostanie zainstalowana w kontenerze Dockera automatycznie.
+
+\section{Uruchomienie aplikacji}
+Dzięki Dockerowi uruchomienie aplikacji jest bardzo proste. Wystarczy sklonować repozytorium, które jest dostępne pod adresem \url{https://github.com/mhajah/KAREM}, a następnie w terminalu wpisać kolejno:
+\begin{itemize}
+    \item \texttt{cd KAREM}
+    \item \texttt{cd be\_karem}
+    \item \texttt{npm install}
+    \item \texttt{npm run build}
+    \item \texttt{cd ..}
+    \item \texttt{docker compose build}
+    \item \texttt{docker compose up -d}
+\end{itemize}
+
+
+
+
+%%%%% BIBLIOGRAFIA
+
+\begin{thebibliography}{1}
+\bibitem{bib:google-classroom} Google Classroom - \url{https://edu.google.com/workspace-for-education/products/classroom/}
+\bibitem{bib:solve-4} Solve 4 - \url{https://solve.edu.pl/}
+\bibitem{bib:moodle} Moodle - \url{https://moodle.org/}
+\bibitem{bib:moodle-code-runner} Moodle Code Runner - \url{https://moodle.org/plugins/qtype_coderunner}
+\bibitem{bib:react} React - \url{https://react.dev/}
+\bibitem{bib:shadcn} Shadcn/ui - \url{https://ui.shadcn.com/}
+\bibitem{bib:tailwind} Tailwind CSS - \url{https://tailwindcss.com/}
+\bibitem{bib:radix-ui} Radix UI - \url{https://www.radix-ui.com/}
+\bibitem{bib:mongo-db} MongoDB - \url{https://www.mongodb.com/}
+\bibitem{bib:express-js} Express.js - \url{https://expressjs.com/}
+\bibitem{bib:node-js} Node.js - \url{https://nodejs.org/en}
+\bibitem{bib:docker} Docker - \url{https://www.docker.com/}
+\bibitem{bib:code-mirror} Code Mirror - \url{https://uiwjs.github.io/react-codemirror/}
+\bibitem{bib:jwt} JWT - \url{https://jwt.io/}
+\bibitem{bib:cms} Artykuł o CMS (wikipedia) - \url{https://pl.wikipedia.org/wiki/System_zarz%C4%85dzania_tre%C5%9Bci%C4%85}
+\bibitem{bib:docker-desktop} Docker Desktop - \url{https://www.docker.com/products/docker-desktop/}
+\bibitem{bib:mongo-db-compass} MongoDB Compass - \url{https://www.mongodb.com/products/tools/compass}
+\end{thebibliography}
+
+\end{document}
