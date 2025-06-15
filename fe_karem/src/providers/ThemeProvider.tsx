@@ -1,3 +1,29 @@
+/**
+ * Theme Provider for the KAREM frontend.
+ * Manages application theming with support for light, dark, and system themes.
+ * 
+ * Features:
+ * - Theme persistence using localStorage
+ * - System theme detection
+ * - Dynamic theme switching
+ * - CSS class-based theme application
+ * 
+ * Theme Options:
+ * - light: Light mode theme
+ * - dark: Dark mode theme
+ * - system: Follows system preferences
+ * 
+ * Implementation:
+ * - Uses React Context for theme state management
+ * - Automatically applies theme classes to root element
+ * - Persists theme preference across sessions
+ * 
+ * Usage:
+ * - Wrap application with ThemeProvider
+ * - Use useTheme hook to access and modify theme
+ * - Theme changes are immediately reflected in UI
+ */
+
 import { createContext, useContext, useEffect, useState } from "react";
 
 type Theme = "dark" | "light" | "system";

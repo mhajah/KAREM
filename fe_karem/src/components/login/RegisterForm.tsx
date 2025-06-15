@@ -1,3 +1,35 @@
+/**
+ * Registration Form Component for the KAREM frontend.
+ * Handles new user registration with comprehensive validation.
+ * 
+ * Features:
+ * - Multi-field form validation using Zod
+ * - Password confirmation matching
+ * - Email format validation
+ * - Error handling and display
+ * 
+ * Validation Rules:
+ * - Username: Minimum 3 characters
+ * - Email: Valid email format
+ * - Password: Minimum 5 characters
+ * - Password confirmation: Must match password
+ * 
+ * UI Components:
+ * - Form fields with labels
+ * - Error alerts for failed attempts
+ * - Success notifications
+ * - Submit button
+ * 
+ * Integration:
+ * - Uses React Hook Form for form management
+ * - Connects with toast notifications
+ * - Handles API errors gracefully
+ * - Closes dialog on successful registration
+ * 
+ * Note: Automatically closes registration dialog
+ * and shows success message on successful registration
+ */
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

@@ -1,3 +1,33 @@
+/**
+ * User Provider and Authentication Context for the KAREM frontend.
+ * Manages user authentication state and role-based access control.
+ * 
+ * Features:
+ * - User authentication state management
+ * - JWT token handling
+ * - Role-based access control
+ * - User data caching with React Query
+ * 
+ * State Management:
+ * - User profile information
+ * - Authentication status
+ * - Role permissions
+ * - Completed tasks tracking
+ * 
+ * Role Hierarchy:
+ * - Admin (100): Full system access
+ * - Teacher (2): Task and class management
+ * - Student (1): Basic access
+ * 
+ * Cache Configuration:
+ * - 5-minute stale time
+ * - 10-minute garbage collection
+ * - Automatic token verification
+ * 
+ * Note: Uses localStorage for token persistence
+ * and implements automatic token verification on mount
+ */
+
 import React, { createContext, useContext, ReactNode } from "react";
 import { useToast } from "@/hooks/use-toast"; 
 import api from "@/api/api";

@@ -1,3 +1,34 @@
+/**
+ * Tasks List Component for the KAREM frontend.
+ * Displays a table of programming tasks with management capabilities.
+ * 
+ * Features:
+ * - Tabular display of tasks
+ * - Task difficulty indicators
+ * - Task status indicators
+ * - Task management actions
+ * 
+ * Actions:
+ * - View task details
+ * - Edit task (opens dialog)
+ * - Delete task (with confirmation)
+ * 
+ * UI Components:
+ * - Sortable table with headers
+ * - Difficulty badges with color coding
+ * - Status icons (enabled/disabled)
+ * - Action buttons with icons
+ * 
+ * Integration:
+ * - Uses React Query for data mutations
+ * - Integrates with task editing form
+ * - Handles task deletion with confirmation
+ * - Links to individual task pages
+ * 
+ * Note: Task management actions are protected
+ * by role-based access control
+ */
+
 import { Task, useDeleteTask } from "@/api/api-endpoints";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Check, DeleteIcon, Edit, ExternalLink, X } from "lucide-react";

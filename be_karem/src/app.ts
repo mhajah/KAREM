@@ -1,3 +1,18 @@
+/**
+ * Main application file for the KAREM backend service.
+ * This file sets up the Express application with all necessary middleware and routes.
+ * 
+ * Key components:
+ * - Express server configuration with CORS and JSON parsing
+ * - Authentication routes (login, register, token verification)
+ * - User management routes (get user data, change roles)
+ * - Task management routes (CRUD operations for tasks)
+ * - Class management routes (add and get classes)
+ * 
+ * All routes are protected with authentication middleware where appropriate,
+ * with role-based access control for admin and teacher specific operations.
+ */
+
 import express from 'express';
 import cors from 'cors';
 import corsOptions from './config/corsOptions';

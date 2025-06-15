@@ -1,3 +1,25 @@
+/**
+ * Authentication Middleware for the KAREM backend.
+ * Handles JWT token verification and role-based access control.
+ * 
+ * Features:
+ * - JWT token validation
+ * - Role-based access control
+ * - Request authentication
+ * 
+ * Security:
+ * - Verifies token presence and validity
+ * - Checks user roles against required roles
+ * - Extends Express Request type with user information
+ * 
+ * Usage:
+ * - Basic auth: authenticateToken()
+ * - Role-based: authenticateToken(['admin', 'teacher'])
+ * 
+ * Note: SECRET_KEY should be moved to environment variables
+ * and consider implementing token refresh mechanism
+ */
+
 import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 

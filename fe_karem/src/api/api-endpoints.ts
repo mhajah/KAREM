@@ -1,3 +1,29 @@
+/**
+ * API endpoints and data types for the KAREM frontend.
+ * Defines TypeScript interfaces and React Query hooks for API interactions.
+ * 
+ * Data Types:
+ * - User: User profile and authentication data
+ * - Task: Programming task with test cases and constraints
+ * - Class: School class information
+ * - TestCase: Input/output pairs for task validation
+ * 
+ * Features:
+ * - Type-safe API calls using React Query
+ * - Automatic cache invalidation
+ * - Error handling with toast notifications
+ * - Optimistic updates for better UX
+ * 
+ * Hooks:
+ * - useUsers: Fetch all users (admin only)
+ * - useTasks: Fetch all tasks
+ * - useTask: Fetch single task by ID
+ * - useDeleteTask: Delete task with cache update
+ * - useClasses: Fetch all classes
+ * 
+ * Note: All API calls are authenticated via the api.ts interceptor
+ */
+
 import { toast } from "@/hooks/use-toast";
 import api from "./api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

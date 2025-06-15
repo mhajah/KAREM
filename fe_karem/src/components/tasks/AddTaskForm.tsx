@@ -1,3 +1,37 @@
+/**
+ * Add Task Form Component for the KAREM frontend.
+ * Provides a comprehensive form for creating new programming tasks.
+ * 
+ * Features:
+ * - Multi-field form with validation
+ * - Dynamic test case management
+ * - Tag selection from existing tags
+ * - Resource limits configuration
+ * 
+ * Form Fields:
+ * - Task name and description
+ * - Difficulty level selection
+ * - Active status toggle
+ * - Tag selection
+ * - Test cases (input/output pairs)
+ * - Resource limits (attempts, time, memory)
+ * 
+ * Validation:
+ * - Required fields validation
+ * - Numeric value validation
+ * - Test case validation
+ * - Tag format validation
+ * 
+ * Integration:
+ * - Uses React Hook Form with Zod validation
+ * - Connects with task management API
+ * - Updates task list on success
+ * - Handles API errors gracefully
+ * 
+ * Note: Form includes automatic task list refresh
+ * and success notification on submission
+ */
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";

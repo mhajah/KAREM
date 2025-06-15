@@ -11,7 +11,7 @@ interface AuthResult {
 }
 
 export const useAuth = (): AuthResult => {
-  const { setUser, logout } = useUser();
+  const { logout } = useUser();
   const [isValid, setIsValid] = useState<boolean>(false);
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -32,7 +32,6 @@ export const useAuth = (): AuthResult => {
       });
 
       const verifiedUser = response.data.user;
-      setUser(verifiedUser);
       setIsValid(true);
       if (verifiedUser.role) setRole(verifiedUser.role);
     } catch (error) {

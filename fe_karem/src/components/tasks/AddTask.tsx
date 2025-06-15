@@ -1,3 +1,28 @@
+/**
+ * Add Task Dialog Component for the KAREM frontend.
+ * Provides a modal dialog for adding new programming tasks.
+ * 
+ * Features:
+ * - Modal dialog with responsive sizing
+ * - State management for dialog visibility
+ * - Integration with AddTaskForm
+ * - Scrollable content area
+ * 
+ * UI Components:
+ * - Trigger button
+ * - Dialog header with title
+ * - Dialog content with form
+ * - Responsive width breakpoints
+ * 
+ * Integration:
+ * - Manages dialog state
+ * - Passes task list to form
+ * - Handles dialog open/close
+ * 
+ * Note: Dialog dimensions adjust based on screen size
+ * and includes scrollable content for overflow
+ */
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddTaskForm } from "./AddTaskForm";

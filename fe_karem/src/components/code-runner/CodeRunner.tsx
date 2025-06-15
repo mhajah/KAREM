@@ -1,3 +1,28 @@
+/**
+ * Code Runner Component for the KAREM frontend.
+ * Provides an interactive Python code editor with execution capabilities.
+ * 
+ * Features:
+ * - Syntax-highlighted code editor using CodeMirror
+ * - Python code execution with test cases
+ * - Real-time code execution feedback
+ * - Task completion tracking
+ * 
+ * Components:
+ * - CodeMirror editor with Python support
+ * - Execution results display
+ * - Success/failure notifications
+ * - Task completion status
+ * 
+ * Integration:
+ * - Uses React Query for API calls
+ * - Integrates with user authentication
+ * - Tracks task completion status
+ * - Provides visual feedback for execution results
+ * 
+ * Note: Code execution is rate-limited and requires authentication
+ */
+
 import { useCallback, useState } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { python } from "@codemirror/lang-python";

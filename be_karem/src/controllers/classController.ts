@@ -1,3 +1,21 @@
+/**
+ * Class Management Controller for the KAREM backend.
+ * Handles operations related to school classes.
+ * 
+ * Features:
+ * - Add new classes with name and year
+ * - Retrieve all classes
+ * 
+ * Access Control:
+ * - Add class: Admin only
+ * - Get classes: Admin and teachers
+ * 
+ * Note: Consider adding more features like:
+ * - Class deletion
+ * - Class modification
+ * - Student assignment to classes
+ */
+
 import { classCollection } from "../config/db";
 import { Request, Response } from 'express';
 

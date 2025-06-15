@@ -1,5 +1,3 @@
-x = input()
+numbers = input().split()
 
-x.sort()
-
-print(x)
+print(int(numbers[0])*int(numbers[1]))

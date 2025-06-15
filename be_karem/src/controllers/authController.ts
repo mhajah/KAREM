@@ -1,3 +1,21 @@
+/**
+ * Authentication Controller for the KAREM backend.
+ * Handles user authentication, registration, and token verification.
+ * 
+ * Features:
+ * - User login with email/username and password
+ * - User registration with secure password hashing
+ * - JWT token verification
+ * - Role-based access control
+ * 
+ * Security:
+ * - Passwords are hashed using SHA-256 with salt
+ * - JWT tokens expire after 15 minutes
+ * - Email/username uniqueness validation
+ * 
+ * Note: SECRET_KEY should be moved to environment variables in production
+ */
+
 import { Request, Response } from 'express';
 import { userCollection } from '../config/db';
 import jwt from 'jsonwebtoken';

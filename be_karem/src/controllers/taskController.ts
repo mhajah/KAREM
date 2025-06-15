@@ -1,3 +1,24 @@
+/**
+ * Task Management Controller for the KAREM backend.
+ * Handles CRUD operations for programming tasks.
+ * 
+ * Features:
+ * - Create new tasks with test cases and constraints
+ * - Retrieve all tasks or specific task by ID
+ * - Update existing tasks
+ * - Delete tasks
+ * 
+ * Access Control:
+ * - Create/Edit/Delete: Admin and teachers only
+ * - View: All authenticated users
+ * 
+ * Task Properties:
+ * - Title and description
+ * - Test cases (input/output pairs)
+ * - Time and memory limits
+ * - Difficulty level
+ */
+
 import { Response } from 'express';
 import { taskCollection } from '../config/db';
 import { ObjectId } from 'mongodb';

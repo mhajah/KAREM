@@ -1,3 +1,30 @@
+/**
+ * Script Execution Controller for the KAREM backend.
+ * Handles the execution and evaluation of Python scripts submitted by users.
+ * 
+ * Features:
+ * - Executes Python code with test cases
+ * - Enforces time and memory limits
+ * - Tracks user attempts and completion status
+ * - Provides detailed test results
+ * 
+ * Security:
+ * - Uses timeout to prevent infinite loops
+ * - Enforces memory limits
+ * - Sanitizes input/output
+ * 
+ * Process:
+ * 1. Validates task and user existence
+ * 2. Executes code against test cases
+ * 3. Records results and updates user progress
+ * 4. Returns detailed test results
+ * 
+ * Note: Consider implementing:
+ * - Code sandboxing
+ * - Input validation
+ * - Rate limiting
+ */
+
 import { Request, Response } from 'express';
 import fs from 'fs';
 import { exec } from 'child_process';

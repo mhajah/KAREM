@@ -1,3 +1,27 @@
+/**
+ * User Management Controller for the KAREM backend.
+ * Handles user-related operations and role management.
+ * 
+ * Features:
+ * - Retrieve user data and progress
+ * - List all users (admin only)
+ * - Change user roles (admin only)
+ * 
+ * User Data:
+ * - Completed tasks and progress
+ * - Role information
+ * - Authentication status
+ * 
+ * Access Control:
+ * - User data: Authenticated users can access their own data
+ * - User listing and role changes: Admin only
+ * 
+ * Note: Consider adding:
+ * - User profile updates
+ * - Password reset functionality
+ * - User deletion
+ */
+
 import { Response, Request } from 'express';
 import { userCollection } from '../config/db';
 import { ObjectId } from 'mongodb';

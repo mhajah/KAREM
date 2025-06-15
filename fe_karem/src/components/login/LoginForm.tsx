@@ -1,3 +1,30 @@
+/**
+ * Login Form Component for the KAREM frontend.
+ * Handles user authentication with form validation and error handling.
+ * 
+ * Features:
+ * - Form validation using Zod schema
+ * - Username/email and password authentication
+ * - Error handling and display
+ * - Integration with user context
+ * 
+ * Validation Rules:
+ * - Username: Minimum 3 characters
+ * - Password: Minimum 5 characters
+ * 
+ * UI Components:
+ * - Form fields with labels and descriptions
+ * - Error alerts for failed attempts
+ * - Submit button with loading state
+ * 
+ * Integration:
+ * - Uses React Hook Form for form management
+ * - Connects with UserProvider for auth state
+ * - Handles API errors gracefully
+ * 
+ * Note: Supports both username and email login
+ */
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

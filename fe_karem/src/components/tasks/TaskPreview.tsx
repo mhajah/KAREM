@@ -1,3 +1,27 @@
+/**
+ * Task Preview Component for the KAREM frontend.
+ * Displays a condensed view of a programming task in a card format.
+ * 
+ * Features:
+ * - Task name and description preview
+ * - Tag display
+ * - Truncated description (200 characters)
+ * - Navigation link to full task
+ * 
+ * UI Components:
+ * - Card layout with header, content, and footer
+ * - Tag list display
+ * - Navigation button
+ * 
+ * Styling:
+ * - Responsive text sizing
+ * - Shadow and border effects
+ * - Flexible layout with flex-grow
+ * 
+ * Note: Used in task lists and search results
+ * to provide a quick overview of task content
+ */
+
 import { Task } from "@/api/api-endpoints";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
